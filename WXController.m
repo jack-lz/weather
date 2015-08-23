@@ -270,7 +270,7 @@
         _hourlyFormatter.dateFormat = @"HH:mm";
         
         _dailyFormatter = [[NSDateFormatter alloc] init];
-        _dailyFormatter.dateFormat = @"HH:mm";
+        _dailyFormatter.dateFormat = @"d-MMM";
     }
     return self;
 }

@@ -48,7 +48,7 @@
         self.locationManager.delegate = self;
         _locationManager.desiredAccuracy = kCLLocationAccuracyBest; //控制定位精度,越高耗电量越大。
         
-        _locationManager.distanceFilter = 100.0f; //控制定位服务更新频率。单位是“米”
+        _locationManager.distanceFilter = 20.0f; //控制定位服务更新频率。单位是“米”
         
          [_locationManager startUpdatingLocation];
         
