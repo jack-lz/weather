@@ -8,6 +8,9 @@
 #import "WXManager.h" 
 #import "WXController.h"
 #import <LBBlurredImage/UIImageView+LBBlurredImage.h>
+#import "CityListViewController.h"
+#import "AppDelegate.h"
+
 
 @interface WXController ()
 @property (nonatomic, strong) UIImageView *backgroundImageView;
@@ -16,6 +19,7 @@
 @property (nonatomic, assign) CGFloat screenHeight;
 @property (nonatomic, strong) NSDateFormatter *hourlyFormatter;
 @property (nonatomic, strong) NSDateFormatter *dailyFormatter;
+@property (nonatomic, retain) UIButton *cityButton;
 @end
 
 @implementation WXController
@@ -114,14 +118,30 @@
     [header addSubview:conditionsLabel];
     
     // top
-    UILabel *cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, self.view.bounds.size.width, 30)];
+    UILabel *cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 20, self.view.bounds.size.width-150, 30)];
     cityLabel.backgroundColor = [UIColor clearColor];
     cityLabel.textColor = [UIColor whiteColor];
     cityLabel.text = @"Loading...";
     cityLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:22];
     cityLabel.textAlignment = NSTextAlignmentCenter;
     [header addSubview:cityLabel];
-   
+    // top
+    self.cityButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-50, 20, 45, 30)];
+    self.cityButton.backgroundColor = [UIColor clearColor];
+    [self.cityButton.layer setMasksToBounds:YES];//方法告诉layer将位于它之下的layer都遮盖
+    [self.cityButton.layer setCornerRadius:10.0]; //设置矩形四个圆角半径
+    [self.cityButton.layer setBorderWidth:0.8]; //边框宽度
+    [self.cityButton setTitle: @"City >" forState:UIControlStateNormal];//设置 title
+    self.cityButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.cityButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];//title color
+    self.cityButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:16];
+    [self.cityButton addTarget:self action:@selector(CityButtonUp:) forControlEvents:UIControlEventTouchUpInside];//添加 action
+     [self.cityButton addTarget:self action:@selector(CityButtondown:) forControlEvents:UIControlEventTouchDown];//添加 action
+    self.cityButton .userInteractionEnabled=YES;//使能可以点击
+    [header addSubview:self.cityButton];
+    
+    
+    
     // 观察WXManager单例的currentCondition。
     [[RACObserve([WXManager sharedManager], currentCondition)
       //传递在主线程上的任何变化，因为你正在更新UI。
@@ -171,8 +191,63 @@
    
 }
 
+//在WXController.m中，你的视图控制器调用该方法来编排其子视图。
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    
+    CGRect bounds = self.view.bounds;
+    
+    self.backgroundImageView.frame = bounds;
+    self.blurredImageView.frame = bounds;
+    self.tableView.frame = bounds;
+}
+
+//隐藏和显示导航控制栈的导航栏
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    self.navigationController.navigationBar.hidden = YES;
+    self.cityButton.backgroundColor = [UIColor clearColor];
+}
+- (void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+     self.navigationController.navigationBar.hidden = NO;
+}
+
+
+//city 按下事件 action
+- (void)CityButtondown: (UIButton*) citybutton {
+    self.cityButton.backgroundColor = [UIColor blueColor];
+}
+
+//city 弹起事件 action
+- (void)CityButtonUp: (id *)sender {
+   
+    //launch city list view
+   
+    CityListViewController *CityViewController = [[CityListViewController alloc]  init];
+
+    CityViewController.delegate = self;
+   
+    [self.navigationController pushViewController:CityViewController animated:YES];
+    
+}
+
+- (NSString*) getDefaultCity
+{
+    return _cityButton.titleLabel.text;
+}
+
+
 
 #pragma mark - UITableViewDataSource
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
@@ -237,16 +312,6 @@
     return 44;
 }
 
-//在WXController.m中，你的视图控制器调用该方法来编排其子视图。
-- (void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
-    
-    CGRect bounds = self.view.bounds;
-    
-    self.backgroundImageView.frame = bounds;
-    self.blurredImageView.frame = bounds;
-    self.tableView.frame = bounds;
-}
 
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
@@ -316,6 +381,8 @@
     // 当你滚动的时候，把结果值赋给模糊图像的alpha属性，来更改模糊图像。
     self.blurredImageView.alpha = percent;
 }
+
+
 /*
 #pragma mark - Navigation
 
