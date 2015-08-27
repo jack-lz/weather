@@ -20,6 +20,7 @@
 @property (nonatomic, strong) NSDateFormatter *hourlyFormatter;
 @property (nonatomic, strong) NSDateFormatter *dailyFormatter;
 @property (nonatomic, retain) UIButton *cityButton;
+@property (nonatomic, strong) NSString *defaultCity;//全局变量，专用于给下一视图传送当前城市的
 @end
 
 @implementation WXController
@@ -71,7 +72,7 @@
                                          temperatureHeight);
     
     CGRect iconFrame = CGRectMake(inset+30,
-                                  temperatureFrame.origin.y - 3*iconHeight,
+                                  temperatureFrame.origin.y - 3.6*iconHeight,
                                   iconHeight,
                                   iconHeight);
     //复制图标框，调整它，使文本具有一定的扩展空间，并通过xy将其移动到该图标的右侧。当我们把标签添加到视图，你会看到布局的效果。
@@ -153,7 +154,7 @@
          
          conditionsLabel.text = [newCondition.condition capitalizedString];
          cityLabel.text = [newCondition.locationName capitalizedString];
-         
+         self.defaultCity=cityLabel.text;
          //使用映射的图像文件名来创建一个图像，并将其设置为视图的图标。
          iconView.image = [UIImage imageNamed:[newCondition imageName]];
          }
@@ -209,11 +210,16 @@
     self.navigationController.navigationBar.hidden = YES;
     self.cityButton.backgroundColor = [UIColor clearColor];
 }
+- (void)viewWillDisappear:(BOOL)animated
+{
+  
+    self.navigationController.navigationBar.hidden = NO;
+}
 - (void) viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
     
-     self.navigationController.navigationBar.hidden = NO;
+   
 }
 
 
@@ -234,10 +240,10 @@
     [self.navigationController pushViewController:CityViewController animated:YES];
     
 }
-
+//这是委托的一个函数，可以在 CityListController.m中调用获取现在的城市。
 - (NSString*) getDefaultCity
 {
-    return _cityButton.titleLabel.text;
+    return self.defaultCity;
 }
 
 
@@ -315,8 +321,9 @@
 
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-    return UIStatusBarStyleLightContent;
+   return UIStatusBarStyleLightContent;
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -381,6 +388,7 @@
     // 当你滚动的时候，把结果值赋给模糊图像的alpha属性，来更改模糊图像。
     self.blurredImageView.alpha = percent;
 }
+
 
 
 /*
