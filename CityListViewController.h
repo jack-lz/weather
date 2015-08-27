@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface CityListViewController :UIViewController
-<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate>
+<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UISearchBarDelegate,UISearchResultsUpdating>//想要代理一些组件，就要实现对应的协议
 
 // 委托代理人，代理一般需使用弱引用(weak或 assign)
 @property (nonatomic, assign) id delegate;

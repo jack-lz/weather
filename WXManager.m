@@ -62,7 +62,6 @@
            //- flattenMap：非常类似于-map：，但不是映射每一个值，它把数据变得扁平，并返回包含三个信号中的一个对象。通过这种方式，你可以考虑将三个进程作为单个工作单元。
            // Flatten and subscribe to all 3 signals when currentLocation updates
            flattenMap:^(CLLocation *newLocation) {
-               NSLog(@"RACObserve");
                return [RACSignal merge:@[
                                          [self updateCurrentConditions],
                                          [self updateDailyForecast],

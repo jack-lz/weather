@@ -21,11 +21,17 @@
 @property (nonatomic, strong) NSDateFormatter *dailyFormatter;
 @property (nonatomic, retain) UIButton *cityButton;
 @property (nonatomic, strong) NSString *defaultCity;//全局变量，专用于给下一视图传送当前城市的
+@property (nonatomic, strong) NSString *SelectCity;
+
+
+
+
 @end
 
 @implementation WXController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     // 获取并存储屏幕高度。之后，你将在用分页的方式来显示所有天气数据时，使用它。
     self.screenHeight = [UIScreen mainScreen].bounds.size.height;
@@ -127,7 +133,7 @@
     cityLabel.textAlignment = NSTextAlignmentCenter;
     [header addSubview:cityLabel];
     // top
-    self.cityButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-50, 20, 45, 30)];
+    self.cityButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-50, 100, 45, 30)];
     self.cityButton.backgroundColor = [UIColor clearColor];
     [self.cityButton.layer setMasksToBounds:YES];//方法告诉layer将位于它之下的layer都遮盖
     [self.cityButton.layer setCornerRadius:10.0]; //设置矩形四个圆角半径
@@ -197,23 +203,33 @@
     [super viewWillLayoutSubviews];
     
     CGRect bounds = self.view.bounds;
-    
+    self.cityButton.backgroundColor = [UIColor clearColor];
     self.backgroundImageView.frame = bounds;
     self.blurredImageView.frame = bounds;
     self.tableView.frame = bounds;
+   
 }
+- (void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
+
+  
+
+}
+
 
 //隐藏和显示导航控制栈的导航栏
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
-    self.navigationController.navigationBar.hidden = YES;
-    self.cityButton.backgroundColor = [UIColor clearColor];
+   
+   self.navigationController.navigationBar.hidden = YES;
+   
 }
+
 - (void)viewWillDisappear:(BOOL)animated
 {
-  
     self.navigationController.navigationBar.hidden = NO;
+  
 }
 - (void) viewDidDisappear:(BOOL)animated
 {
@@ -232,7 +248,7 @@
 - (void)CityButtonUp: (id *)sender {
    
     //launch city list view
-   
+    self.cityButton.backgroundColor = [UIColor clearColor];
     CityListViewController *CityViewController = [[CityListViewController alloc]  init];
 
     CityViewController.delegate = self;
@@ -240,13 +256,18 @@
     [self.navigationController pushViewController:CityViewController animated:YES];
     
 }
-//这是委托的一个函数，可以在 CityListController.m中调用获取现在的城市。
+
+
+//这是委托协议的2个函数，给被代理类（委托方）调用的。
 - (NSString*) getDefaultCity
 {
     return self.defaultCity;
 }
+- (void)citySelectionUpdate:(NSString *) selectedCity
+{
+    self.SelectCity= selectedCity;
 
-
+}
 
 #pragma mark - UITableViewDataSource
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

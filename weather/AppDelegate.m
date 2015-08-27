@@ -25,6 +25,7 @@
     //将第一个视图控制器作为基栈视图控制器添加到导航视图控制器栈中
     UINavigationController *navCtr = [[UINavigationController alloc] initWithRootViewController:rootVC];
     //作为App的根视图控制器。也可以使用WXController的单个实例作为根试图控制器。
+    navCtr.navigationBar.hidden=YES;
     self.window.rootViewController = navCtr;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];

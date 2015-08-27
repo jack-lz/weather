@@ -20,7 +20,6 @@
 @property (nonatomic, strong) UITableView *tableView;
 @property (strong, nonatomic) UISearchController  *searchDc;
 @property (nonatomic, strong) NSString* defaultCity;
-@property (nonatomic, strong) UITableViewController *searchTVC;
 @property (nonatomic, retain) UIImageView *checkImgView;
 @property NSUInteger curSection;
 @property NSUInteger curRow;
@@ -30,12 +29,12 @@
 @property (nonatomic, retain) NSArray *keys;
 @property (nonatomic, retain) NSArray *volues;
 @property (nonatomic, retain) NSMutableArray *volue;
+@property (nonatomic, retain) NSMutableArray *searchResults;//用与保存搜索结果，可变数组
 @end
 
 
 @implementation CityListViewController
 
-NSMutableArray *searchResults;//用与保存搜索结果，可变数组
 NSArray *searchResultsCity;//搜索中间结果
 
 #define CHECK_TAG 1100
@@ -85,7 +84,7 @@ NSArray *searchResultsCity;//搜索中间结果
     [self.navigationItem setTitle:@"Choose City"];
     
     
-    self.curRow = NSNotFound;
+   
      UIImage *background = [UIImage imageNamed:@"bp"];
     // 创建一个静态的背景图，并添加到视图上。
     self.backgroundImageView = [[UIImageView alloc] initWithImage:background];
@@ -99,24 +98,22 @@ NSArray *searchResultsCity;//搜索中间结果
     [self.view  addSubview:self.blurredImageView];
     
   //添加搜索栏
+    self.searchDc.searchBar.scopeButtonTitles = @[NSLocalizedString(@"ScopeButtonCountry",@"Country"),
+                                                          NSLocalizedString(@"ScopeButtonCapital",@"Capital")];
     
-//    self.searchTVC= [[UITableViewController alloc]initWithStyle:UITableViewStylePlain];
-//    _searchTVC.tableView.dataSource=self;
-//    _searchTVC.tableView.delegate=self;
-    
-    
-
     self.searchDc= [[UISearchController alloc] initWithSearchResultsController:nil];
     self.searchDc.searchResultsUpdater = self;
-    self.searchDc.dimsBackgroundDuringPresentation = YES;
+    self.searchDc.dimsBackgroundDuringPresentation = NO;//展示搜索结果时是否去掉底板，若是 yes，搜索结果就无法选择了
     self.searchDc.hidesNavigationBarDuringPresentation = YES;//搜索时是否隐藏NavigationBar
-   [self.searchDc.searchBar sizeToFit];
+    self.definesPresentationContext = YES;//Finally since the search view covers the table view when active we make the table view controller define the presentation context
+    [self.searchDc.searchBar sizeToFit];
     //设置searchBar格式并添加到 tableheader
     self.searchDc.searchBar.backgroundColor = [UIColor clearColor];
     self.searchDc.searchBar.tintColor=[UIColor blackColor];
+    self.searchDc.searchBar.delegate = self;
     self.searchDc.searchBar.placeholder=@"Please input key word...";
     self.searchDc.searchBar.autocorrectionType=UITextAutocorrectionTypeNo;//自动纠错类型
-    self.searchDc.searchBar.showsCancelButton=YES;// Don't show the scope bar or cancel button until editing begins
+    self.searchDc.searchBar.showsCancelButton=NO;// Don't show the scope bar or cancel button until editing begins
     //添加搜索框到页眉位置
     // 获取屏幕的框架，创建tableview来处理所有的数据呈现。
     self.tableView = [[UITableView alloc] init];
@@ -139,6 +136,7 @@ NSArray *searchResultsCity;//搜索中间结果
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.view.bounds.size.width,self.searchDc.searchBar.bounds.size.height)];
      self.tableView.tableHeaderView.backgroundColor = [UIColor clearColor];
     [self.tableView.tableHeaderView addSubview:self.searchDc.searchBar];
+    
      // Hide the search bar until user scrolls up
     CGRect newBounds = [[self tableView] bounds];
     newBounds.origin.y = newBounds.origin.y +  self.searchDc.searchBar.bounds.size.height;
@@ -169,8 +167,8 @@ NSArray *searchResultsCity;//搜索中间结果
         self.defaultCity=@"loading";
     }
     
-    
-    /*************以下是可以在 tableview中找到defaultCity，并翻到那一页，标记它***************/
+     self.curRow = NSNotFound;
+    /*************以下是可以在 tableview中找到defaultCity，并翻到那一页，标记它，若没有，就保留curRow = NSNotFound，返回上一界面***************/
 //    if (defaultCity) {
 //        NSArray *citySection;
 //        self.defaultSelectionRow = NSNotFound;
@@ -204,7 +202,10 @@ NSArray *searchResultsCity;//搜索中间结果
     self.backgroundImageView.frame = bounds;
     self.blurredImageView.frame = bounds;
   //将tableview 下移
-    self.tableView.frame=CGRectMake(bounds.origin.x,bounds.origin.y+NavigationbarHeight,bounds.size.width,bounds.size.height);
+      if(self.searchDc.active){
+          self.tableView.frame=CGRectMake(bounds.origin.x,bounds.origin.y,bounds.size.width,bounds.size.height);}
+      else{self.tableView.frame=CGRectMake(bounds.origin.x,bounds.origin.y+NavigationbarHeight,bounds.size.width,bounds.size.height);}
+    
     
 }
 - (void)viewDidUnload
@@ -232,19 +233,21 @@ NSArray *searchResultsCity;//搜索中间结果
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-     if (self.searchDc.active)
-    {
-    self.searchDc.active = NO;
-    [self.searchDc.searchBar removeFromSuperview];
-    }
-     self.navigationController.navigationBar.hidden = NO;
+
+
+ //   self.navigationController.navigationBar.hidden = YES;
+    
 }
 
 - (void) viewDidDisappear:(BOOL)animated
 {
     [super viewDidDisappear:animated];
-    
-  
+   if(self.searchDc.active){
+       self.searchDc.active = NO;}
+  [self.searchDc.searchBar removeFromSuperview];
+   
+   self.navigationController.navigationBar.hidden = YES;
+
 }
 
 
@@ -273,7 +276,7 @@ NSArray *searchResultsCity;//搜索中间结果
     NSArray *citySection = [cities objectForKey:key];
      if(self.searchDc.active)
     {
-        return [searchResults count];
+        return [_searchResults count];
     } else {
       return [citySection count];    }
    
@@ -313,8 +316,18 @@ NSArray *searchResultsCity;//搜索中间结果
      if(self.searchDc.active)
      {
         
-        cell.textLabel.text = [searchResults objectAtIndex:indexPath.row];
+        cell.textLabel.text = [_searchResults objectAtIndex:indexPath.row];
         cell.imageView.image = nil;
+         //添加“搜索结果”到 tableview 的headerview 上去。
+         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(6, 3, tableView.bounds.size.width - 10, 34)] ;
+         label.textColor = [UIColor colorWithRed:0.3 green:0.4 blue:0.8 alpha:0.8];
+         label.backgroundColor = [UIColor clearColor];
+         label.text =@"搜索结果";//设置分组标题
+         label.font = [UIFont fontWithName:@"Georgia-Bold" size:23];
+         label.textAlignment = NSTextAlignmentCenter;
+         [self.tableView.tableHeaderView addSubview:label];
+
+         
      }
      else
      {   cell.textLabel.text = [[cities objectForKey:key] objectAtIndex:indexPath.row];
@@ -333,7 +346,7 @@ NSArray *searchResultsCity;//搜索中间结果
    
     
     
-      /**********使用系统自带的 check mark ***************/
+      /**********使用系统自带的 check mark ，主要再界面滚动时，刷新时保留标记***************/
     if (indexPath.section == curSection && indexPath.row == curRow)
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     else
@@ -378,15 +391,9 @@ NSArray *searchResultsCity;//搜索中间结果
     label.backgroundColor = [UIColor clearColor];
     NSString *key = [keys objectAtIndex:section];
     
-     if(self.searchDc.active)
+     if(!self.searchDc.active)
     {
-       label.text =@"搜索结果";//设置分组标题
-       label.font = [UIFont fontWithName:@"Georgia-Bold" size:23];
-       label.textAlignment = NSTextAlignmentCenter;
-        [self.tableView.tableHeaderView addSubview:label];
-    }else{
           if(section == 0 ){
-             
           label.text =[@"Current City: " stringByAppendingString:self.defaultCity];
           label.textColor = [UIColor blackColor];
           label.textAlignment = NSTextAlignmentCenter;
@@ -422,18 +429,22 @@ NSArray *searchResultsCity;//搜索中间结果
 #pragma mark - searchController delegate
 - (void)updateSearchResultsForSearchController:(UISearchController *)searchController
 {
-    [searchResults removeAllObjects];
-    NSPredicate *searchPredicate = [NSPredicate predicateWithFormat:@"SELF CONTAINS[c] %@", self.searchDc.searchBar.text];
-    searchResultsCity = [[_volue  filteredArrayUsingPredicate:searchPredicate] mutableCopy];
-    searchResults=[NSMutableArray arrayWithCapacity:30];
+    [_searchResults removeAllObjects];
+    NSPredicate *searchString = [NSPredicate predicateWithFormat:@"SELF CONTAINS[c] %@", self.searchDc.searchBar.text];
+    searchResultsCity = [[_volue  filteredArrayUsingPredicate:searchString] mutableCopy];
+    _searchResults=[NSMutableArray arrayWithCapacity:30];
     
     for (NSString *object in searchResultsCity)
     {
-        [searchResults addObject:object];
+        [_searchResults addObject:object];
     }
-    
-    [self.tableView reloadData];
-    //dispatch_async(dispatch_get_main_queue(), ^{  [self.tableView reloadData];  });
+    dispatch_async(dispatch_get_main_queue(), ^{  [self.tableView reloadData];  });
+}
+
+
+- (void)searchBar:(UISearchBar *)searchBar selectedScopeButtonIndexDidChange:(NSInteger)selectedScope
+{
+    [self updateSearchResultsForSearchController:self.searchDc];
 }
 
 
@@ -449,6 +460,7 @@ NSArray *searchResultsCity;//搜索中间结果
     }
     
 }
+
 
 - (void)goToSearch:(id)sender
 {
@@ -494,51 +506,34 @@ NSArray *searchResultsCity;//搜索中间结果
     //     [cell.contentView addSubview:checkImgView];
     //     checkImgView.hidden = false;
     
-   
-    if (tableView == self.searchDisplayController.searchResultsTableView)
-    {
-        [self performSegueWithIdentifier: @"showRecipeDetail" sender:
-         self];
-    }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    NSLog(@"点击");
     /**********Navigation logic may go here. Create and push another view controller*************/
     /*
      <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-    
      [self.navigationController pushViewController:detailViewController animated:YES];
      [detailViewController release];
      */
-
+     
+    
+     //pop to the previous view
+   [self ReturnSelectCity];
 }
 
 
 
-
-
-
-- (IBAction)pressReturn:(id)sender {
-    //notify delegate user selection if it different with default
-    if (curRow != NSNotFound) {
-        NSString* key = [keys objectAtIndex:curSection];
+- (void)ReturnSelectCity {
+    //带前一页面默认标记功能时，需要判断curRow，若是没找到，而且没选择新的 city 就返回，那就不返回city 值。
+    
+    if(self.searchDc.active){
+        [delegate citySelectionUpdate:[_searchResults objectAtIndex:curRow]];
+    }
+    else{ NSString* key = [keys objectAtIndex:curSection];
         [delegate citySelectionUpdate:[[cities objectForKey:key] objectAtIndex:curRow]];
     }
-    
-    [self dismissModalViewControllerAnimated:YES];
+    //  [self.navigationController didMoveToParentViewController:];
+       [self.navigationController popToRootViewControllerAnimated:YES];//返回根目录。
 }
 @end
+
+
+
