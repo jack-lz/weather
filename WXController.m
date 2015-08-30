@@ -266,8 +266,12 @@
 - (void)citySelectionUpdate:(NSString *) selectedCity
 {
     self.SelectCity= selectedCity;
+    NSLog(@"%@",self.SelectCity);
 
 }
+
+
+
 
 #pragma mark - UITableViewDataSource
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
