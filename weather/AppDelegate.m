@@ -10,6 +10,7 @@
 #import "WXController.h"
 #import <TSMessage.h>
 
+
 @interface AppDelegate ()
 
 @end
@@ -19,8 +20,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // 初始化并设置WXController实例作为App的根视图控制器。通常这个控制器是一个的UINavigationController或UITabBarController，但在当前情况下，你使用WXController的单个实例。
-    self.window.rootViewController = [[WXController alloc] init];
+    // 设置根控制器，通常这个控制器是一个的UINavigationController或UITabBarController
+    WXController *rootVC = [[WXController alloc] init];
+    //将第一个视图控制器作为基栈视图控制器添加到导航视图控制器栈中
+    UINavigationController *navCtr = [[UINavigationController alloc] initWithRootViewController:rootVC];
+    //作为App的根视图控制器。也可以使用WXController的单个实例作为根试图控制器。
+    navCtr.navigationBar.hidden=YES;
+    self.window.rootViewController = navCtr;
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     // 设置默认的视图控制器来显示你的TSMessages。这样做，你将不再需要手动指定要使用的控制器来显示警告。

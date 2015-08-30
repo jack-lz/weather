@@ -70,6 +70,7 @@
 }
 //获取当前状况
 - (RACSignal *)fetchCurrentConditionsForLocation:(CLLocationCoordinate2D)coordinate {
+    
     //使用CLLocationCoordinate2D对象的经纬度数据来格式化URL。
     NSString *urlString = [NSString stringWithFormat:@"http://api.openweathermap.org/data/2.5/weather?lat=%f&lon=%f&units=imperial",coordinate.latitude, coordinate.longitude];
     NSURL *url = [NSURL URLWithString:urlString];
@@ -113,6 +114,7 @@
         return [[list map:^(NSDictionary *item) {
             return [MTLJSONAdapter modelOfClass:[WXDailyForecast class] fromJSONDictionary:item error:nil];
         }] array];
+        
     }];
 }
 

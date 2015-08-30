@@ -8,6 +8,9 @@
 #import "WXManager.h" 
 #import "WXController.h"
 #import <LBBlurredImage/UIImageView+LBBlurredImage.h>
+#import "CityListViewController.h"
+#import "AppDelegate.h"
+
 
 @interface WXController ()
 @property (nonatomic, strong) UIImageView *backgroundImageView;
@@ -16,11 +19,19 @@
 @property (nonatomic, assign) CGFloat screenHeight;
 @property (nonatomic, strong) NSDateFormatter *hourlyFormatter;
 @property (nonatomic, strong) NSDateFormatter *dailyFormatter;
+@property (nonatomic, retain) UIButton *cityButton;
+@property (nonatomic, strong) NSString *defaultCity;//全局变量，专用于给下一视图传送当前城市的
+@property (nonatomic, strong) NSString *SelectCity;
+
+
+
+
 @end
 
 @implementation WXController
 
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
     // 获取并存储屏幕高度。之后，你将在用分页的方式来显示所有天气数据时，使用它。
     self.screenHeight = [UIScreen mainScreen].bounds.size.height;
@@ -67,7 +78,7 @@
                                          temperatureHeight);
     
     CGRect iconFrame = CGRectMake(inset+30,
-                                  temperatureFrame.origin.y - 3*iconHeight,
+                                  temperatureFrame.origin.y - 3.6*iconHeight,
                                   iconHeight,
                                   iconHeight);
     //复制图标框，调整它，使文本具有一定的扩展空间，并通过xy将其移动到该图标的右侧。当我们把标签添加到视图，你会看到布局的效果。
@@ -114,14 +125,30 @@
     [header addSubview:conditionsLabel];
     
     // top
-    UILabel *cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, self.view.bounds.size.width, 30)];
+    UILabel *cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 20, self.view.bounds.size.width-150, 30)];
     cityLabel.backgroundColor = [UIColor clearColor];
     cityLabel.textColor = [UIColor whiteColor];
     cityLabel.text = @"Loading...";
     cityLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:22];
     cityLabel.textAlignment = NSTextAlignmentCenter;
     [header addSubview:cityLabel];
-   
+    // top
+    self.cityButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-50, 100, 45, 30)];
+    self.cityButton.backgroundColor = [UIColor clearColor];
+    [self.cityButton.layer setMasksToBounds:YES];//方法告诉layer将位于它之下的layer都遮盖
+    [self.cityButton.layer setCornerRadius:10.0]; //设置矩形四个圆角半径
+    [self.cityButton.layer setBorderWidth:0.8]; //边框宽度
+    [self.cityButton setTitle: @"City >" forState:UIControlStateNormal];//设置 title
+    self.cityButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.cityButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];//title color
+    self.cityButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:16];
+    [self.cityButton addTarget:self action:@selector(CityButtonUp:) forControlEvents:UIControlEventTouchUpInside];//添加 action
+     [self.cityButton addTarget:self action:@selector(CityButtondown:) forControlEvents:UIControlEventTouchDown];//添加 action
+    self.cityButton .userInteractionEnabled=YES;//使能可以点击
+    [header addSubview:self.cityButton];
+    
+    
+    
     // 观察WXManager单例的currentCondition。
     [[RACObserve([WXManager sharedManager], currentCondition)
       //传递在主线程上的任何变化，因为你正在更新UI。
@@ -133,7 +160,7 @@
          
          conditionsLabel.text = [newCondition.condition capitalizedString];
          cityLabel.text = [newCondition.locationName capitalizedString];
-         
+         self.defaultCity=cityLabel.text;
          //使用映射的图像文件名来创建一个图像，并将其设置为视图的图标。
          iconView.image = [UIImage imageNamed:[newCondition imageName]];
          }
@@ -171,8 +198,89 @@
    
 }
 
+//在WXController.m中，你的视图控制器调用该方法来编排其子视图。
+- (void)viewWillLayoutSubviews {
+    [super viewWillLayoutSubviews];
+    
+    CGRect bounds = self.view.bounds;
+    self.cityButton.backgroundColor = [UIColor clearColor];
+    self.backgroundImageView.frame = bounds;
+    self.blurredImageView.frame = bounds;
+    self.tableView.frame = bounds;
+   
+}
+- (void)viewDidLayoutSubviews{
+    [super viewDidLayoutSubviews];
+
+  
+
+}
+
+
+//隐藏和显示导航控制栈的导航栏
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+   
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+   
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+  
+}
+- (void) viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+   
+}
+
+
+//city 按下事件 action
+- (void)CityButtondown: (UIButton*) citybutton {
+    self.cityButton.backgroundColor = [UIColor blueColor];
+}
+
+//city 弹起事件 action
+- (void)CityButtonUp: (id *)sender {
+   
+    //launch city list view
+    self.cityButton.backgroundColor = [UIColor clearColor];
+    CityListViewController *CityViewController = [[CityListViewController alloc]  init];
+
+    CityViewController.delegate = self;
+   
+    [self.navigationController pushViewController:CityViewController animated:YES];
+    
+}
+
+
+//这是委托协议的2个函数，给被代理类（委托方）调用的。
+- (NSString*) getDefaultCity
+{
+    return self.defaultCity;//向 WXManager 传值
+}
+
+- (void)citySelectionUpdate:(NSString *) selectedCity
+{
+    self.SelectCity= selectedCity;//从 WXManger 传值回来
+    NSLog(@"%@",self.SelectCity);
+    [[WXManager sharedManager] ChooseCityLocation:self.SelectCity];
+
+}
+
+
+
 
 #pragma mark - UITableViewDataSource
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 2;
@@ -237,21 +345,12 @@
     return 44;
 }
 
-//在WXController.m中，你的视图控制器调用该方法来编排其子视图。
-- (void)viewWillLayoutSubviews {
-    [super viewWillLayoutSubviews];
-    
-    CGRect bounds = self.view.bounds;
-    
-    self.backgroundImageView.frame = bounds;
-    self.blurredImageView.frame = bounds;
-    self.tableView.frame = bounds;
-}
 
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-    return UIStatusBarStyleLightContent;
+   return UIStatusBarStyleLightContent;
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -270,7 +369,7 @@
         _hourlyFormatter.dateFormat = @"HH:mm";
         
         _dailyFormatter = [[NSDateFormatter alloc] init];
-        _dailyFormatter.dateFormat = @"HH:mm";
+        _dailyFormatter.dateFormat = @"d-MMM";
     }
     return self;
 }
@@ -316,6 +415,9 @@
     // 当你滚动的时候，把结果值赋给模糊图像的alpha属性，来更改模糊图像。
     self.blurredImageView.alpha = percent;
 }
+
+
+
 /*
 #pragma mark - Navigation
 
