@@ -26,5 +26,6 @@
 
 // 这个方法启动或刷新整个位置和天气的查找过程。
 - (void)findCurrentLocation;
+- (void)ChooseCityLocation:(NSString *) selectedCity;
 
 @end

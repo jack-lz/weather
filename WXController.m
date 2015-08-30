@@ -222,13 +222,13 @@
 {
     [super viewDidAppear:animated];
    
-   self.navigationController.navigationBar.hidden = YES;
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
    
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    self.navigationController.navigationBar.hidden = NO;
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
   
 }
 - (void) viewDidDisappear:(BOOL)animated
@@ -261,12 +261,14 @@
 //这是委托协议的2个函数，给被代理类（委托方）调用的。
 - (NSString*) getDefaultCity
 {
-    return self.defaultCity;
+    return self.defaultCity;//向 WXManager 传值
 }
+
 - (void)citySelectionUpdate:(NSString *) selectedCity
 {
-    self.SelectCity= selectedCity;
+    self.SelectCity= selectedCity;//从 WXManger 传值回来
     NSLog(@"%@",self.SelectCity);
+    [[WXManager sharedManager] ChooseCityLocation:self.SelectCity];
 
 }
 

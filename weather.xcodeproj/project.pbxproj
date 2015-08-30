@@ -17,6 +17,7 @@
 		563D771E1B84959C00533BD0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 563D771D1B84959C00533BD0 /* Images.xcassets */; };
 		563D77211B84959C00533BD0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 563D771F1B84959C00533BD0 /* LaunchScreen.xib */; };
 		563D772D1B84959C00533BD0 /* weatherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 563D772C1B84959C00533BD0 /* weatherTests.m */; };
+		56501D771B933C1400659378 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56501D761B933C1400659378 /* MapKit.framework */; };
 		56CCF6A21B8497F900435736 /* WXController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CCF6A11B8497F900435736 /* WXController.m */; };
 		56CCF6BF1B84991E00435736 /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 56CCF6A41B84991E00435736 /* bg.png */; };
 		56CCF6C01B84991E00435736 /* bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 56CCF6A51B84991E00435736 /* bg@2x.png */; };
@@ -89,6 +90,7 @@
 		563D77261B84959C00533BD0 /* weatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = weatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		563D772B1B84959C00533BD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		563D772C1B84959C00533BD0 /* weatherTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = weatherTests.m; sourceTree = "<group>"; };
+		56501D761B933C1400659378 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		56CCF6A01B8497F900435736 /* WXController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXController.h; sourceTree = "<group>"; };
 		56CCF6A11B8497F900435736 /* WXController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXController.m; sourceTree = "<group>"; };
 		56CCF6A41B84991E00435736 /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg.png; sourceTree = "<group>"; };
@@ -145,6 +147,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56501D771B933C1400659378 /* MapKit.framework in Frameworks */,
 				56E2D9551B8B272E00A9FB42 /* QuartzCore.framework in Frameworks */,
 				56E2D9531B8B272500A9FB42 /* UIKit.framework in Frameworks */,
 				56E2D9511B8B271C00A9FB42 /* Foundation.framework in Frameworks */,
@@ -167,6 +170,7 @@
 		00DBD2B0CD7738F8CA332BFD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				56501D761B933C1400659378 /* MapKit.framework */,
 				56E2D9541B8B272E00A9FB42 /* QuartzCore.framework */,
 				56E2D9521B8B272500A9FB42 /* UIKit.framework */,
 				56E2D9501B8B271C00A9FB42 /* Foundation.framework */,

@@ -246,7 +246,7 @@ NSArray *searchResultsCity;//搜索中间结果
        self.searchDc.active = NO;}
   [self.searchDc.searchBar removeFromSuperview];
    
-   self.navigationController.navigationBar.hidden = YES;
+   [self.navigationController setNavigationBarHidden:YES animated:YES];
 
 }
 
@@ -532,6 +532,7 @@ NSArray *searchResultsCity;//搜索中间结果
     }
     //  [self.navigationController didMoveToParentViewController:];
        [self.navigationController popToRootViewControllerAnimated:YES];//返回根目录。
+    
 }
 @end
 
