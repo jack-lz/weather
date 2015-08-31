@@ -19,7 +19,7 @@
 @property (nonatomic, assign) CGFloat screenHeight;
 @property (nonatomic, strong) NSDateFormatter *hourlyFormatter;
 @property (nonatomic, strong) NSDateFormatter *dailyFormatter;
-@property (nonatomic, retain) UIButton *cityButton;
+@property (nonatomic, strong) UIButton *cityButton;
 @property (nonatomic, strong) NSString *defaultCity;//全局变量，专用于给下一视图传送当前城市的
 @property (nonatomic, strong) NSString *SelectCity;
 
@@ -133,7 +133,7 @@
     cityLabel.textAlignment = NSTextAlignmentCenter;
     [header addSubview:cityLabel];
     // top
-    self.cityButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-50, 100, 45, 30)];
+    self.cityButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-50,23, 45, 28)];
     self.cityButton.backgroundColor = [UIColor clearColor];
     [self.cityButton.layer setMasksToBounds:YES];//方法告诉layer将位于它之下的layer都遮盖
     [self.cityButton.layer setCornerRadius:10.0]; //设置矩形四个圆角半径
@@ -268,7 +268,8 @@
 {
     self.SelectCity= selectedCity;//从 WXManger 传值回来
     NSLog(@"%@",self.SelectCity);
-    [[WXManager sharedManager] ChooseCityLocation:self.SelectCity];
+    
+    [[WXManager sharedManager] ChooseCityLocation:self.SelectCity];//
 
 }
 
@@ -340,9 +341,9 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     //  Determine cell height based on screen
     NSInteger cellCount = [self tableView:tableView numberOfRowsInSection:indexPath.section];
-    return self.screenHeight / (CGFloat)cellCount;
+    return self.screenHeight /(CGFloat)cellCount;
     
-    return 44;
+  //  return 44;
 }
 
 

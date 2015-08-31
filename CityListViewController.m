@@ -18,18 +18,19 @@
 @property (nonatomic, strong) UIImageView *blurredImageView;
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, strong) UITableView *tableView;
-@property (strong, nonatomic) UISearchController  *searchDc;
+@property (nonatomic, strong) UISearchController  *searchDc;
 @property (nonatomic, strong) NSString* defaultCity;
-@property (nonatomic, retain) UIImageView *checkImgView;
+@property (nonatomic, strong) NSString* text;
+@property (nonatomic, strong) UIImageView *checkImgView;
 @property NSUInteger curSection;
 @property NSUInteger curRow;
 @property NSUInteger defaultSelectionRow;
 @property NSUInteger defaultSelectionSection;
-@property (nonatomic, retain) NSDictionary *cities;
-@property (nonatomic, retain) NSArray *keys;
-@property (nonatomic, retain) NSArray *volues;
-@property (nonatomic, retain) NSMutableArray *volue;
-@property (nonatomic, retain) NSMutableArray *searchResults;//用与保存搜索结果，可变数组
+@property (nonatomic, strong) NSDictionary *cities;
+@property (nonatomic, strong) NSArray *keys;
+@property (nonatomic, strong) NSArray *volues;
+@property (nonatomic, strong) NSMutableArray *volue;
+@property (nonatomic, strong) NSMutableArray *searchResults;//用与保存搜索结果，可变数组
 @end
 
 
@@ -104,9 +105,9 @@ NSArray *searchResultsCity;//搜索中间结果
     self.searchDc= [[UISearchController alloc] initWithSearchResultsController:nil];
     self.searchDc.searchResultsUpdater = self;
     self.searchDc.dimsBackgroundDuringPresentation = NO;//展示搜索结果时是否去掉底板，若是 yes，搜索结果就无法选择了
-    self.searchDc.hidesNavigationBarDuringPresentation = YES;//搜索时是否隐藏NavigationBar
+    self.searchDc.hidesNavigationBarDuringPresentation = NO;//搜索时是否隐藏NavigationBar
     self.definesPresentationContext = YES;//Finally since the search view covers the table view when active we make the table view controller define the presentation context
-    [self.searchDc.searchBar sizeToFit];
+    
     //设置searchBar格式并添加到 tableheader
     self.searchDc.searchBar.backgroundColor = [UIColor clearColor];
     self.searchDc.searchBar.tintColor=[UIColor blackColor];
@@ -114,7 +115,7 @@ NSArray *searchResultsCity;//搜索中间结果
     self.searchDc.searchBar.placeholder=@"Please input key word...";
     self.searchDc.searchBar.autocorrectionType=UITextAutocorrectionTypeNo;//自动纠错类型
     self.searchDc.searchBar.showsCancelButton=NO;// Don't show the scope bar or cancel button until editing begins
-    //添加搜索框到页眉位置
+    [self.searchDc.searchBar sizeToFit];//添加搜索框到页眉位置
     // 获取屏幕的框架，创建tableview来处理所有的数据呈现。
     self.tableView = [[UITableView alloc] init];
     self.tableView.backgroundColor = [UIColor clearColor];
@@ -130,18 +131,19 @@ NSArray *searchResultsCity;//搜索中间结果
     self.tableView.sectionIndexTrackingBackgroundColor = [UIColor grayColor];
     /*下面是把 searchbar 作为tableview 的 header，这样做的坏处是，不能通过其他 button 调用 searchbar 了，
      还有就是把 searcher 独立出来，这样就不能一起滚动，而且不能隐藏了*/
-    //self.tableView.tableHeaderView = self.searchDc.searchBar;
+    // self.tableView.tableHeaderView = self.searchDc.searchBar;
     /*采用先建立一个 tableviewheader，然后把 searchbar 添加上去，这样最好，没有什么问题,
     还有一个额外的好处，当在顶端下拉时，填充使用的是 tableview 的背景，而不是 searchbar 的背景，这样可以设置为透明了。*/
     self.tableView.tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0,0,self.view.bounds.size.width,self.searchDc.searchBar.bounds.size.height)];
      self.tableView.tableHeaderView.backgroundColor = [UIColor clearColor];
+   
     [self.tableView.tableHeaderView addSubview:self.searchDc.searchBar];
     
      // Hide the search bar until user scrolls up
-    CGRect newBounds = [[self tableView] bounds];
-    newBounds.origin.y = newBounds.origin.y +  self.searchDc.searchBar.bounds.size.height;
-    [[self tableView] setBounds:newBounds];
-    
+//    CGRect newBounds = [[self tableView] bounds];
+//    newBounds.origin.y = newBounds.origin.y +  self.searchDc.searchBar.bounds.size.height;
+//    [[self tableView] setBounds:newBounds];
+   
     [self.view addSubview:self.tableView];
   
     
@@ -204,7 +206,7 @@ NSArray *searchResultsCity;//搜索中间结果
   //将tableview 下移
       if(self.searchDc.active){
           self.tableView.frame=CGRectMake(bounds.origin.x,bounds.origin.y,bounds.size.width,bounds.size.height);}
-      else{self.tableView.frame=CGRectMake(bounds.origin.x,bounds.origin.y+NavigationbarHeight,bounds.size.width,bounds.size.height);}
+      else{self.tableView.frame=CGRectMake(bounds.origin.x,bounds.origin.y+NavigationbarHeight,bounds.size.width,bounds.size.height-NavigationbarHeight);}
     
     
 }
@@ -244,7 +246,6 @@ NSArray *searchResultsCity;//搜索中间结果
     [super viewDidDisappear:animated];
    if(self.searchDc.active){
        self.searchDc.active = NO;}
-  [self.searchDc.searchBar removeFromSuperview];
    
    [self.navigationController setNavigationBarHidden:YES animated:YES];
 
@@ -286,48 +287,41 @@ NSArray *searchResultsCity;//搜索中间结果
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-   
     //首先根据标识去缓存池取
-    static NSString *CellIdentifier = @"CellIdentifier";
+    static NSString *CellIdentifier = @"cell";
     NSString *key = [keys objectAtIndex:indexPath.section];
-     //如果缓存池没有取到则重新创建并放到缓存池中
+    //如果缓存池没有取到则重新创建并放到缓存池中
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     } else {
         /**********使用自定义的 check mark ***************/
-//         for (UIView *view in cell.contentView.subviews) {
-//         if (view.tag == CHECK_TAG) {
-//         if (indexPath.section == curSection && indexPath.row == curRow)
-//         checkImgView.hidden = false;
-//         else
-//         checkImgView.hidden = true;
-//         }
-//         }
+        //         for (UIView *view in cell.contentView.subviews) {
+        //         if (view.tag == CHECK_TAG) {
+        //         if (indexPath.section == curSection && indexPath.row == curRow)
+        //         checkImgView.hidden = false;
+        //         else
+        //         checkImgView.hidden = true;
+        //         }
+        //         }
     }
-    
+
     // Configure the cell...
         cell.selectionStyle =UITableViewCellSelectionStyleNone;
         cell.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
         cell.textLabel.font = [UIFont systemFontOfSize:18];
         cell.textLabel.textColor = [UIColor whiteColor];
    // 先判断是原 view 还是搜索 view
+    
      if(self.searchDc.active)
      {
+         if([_searchResults count]==0 ){
+             cell.textLabel.text = nil;
+         }else{
+            cell.textLabel.text = [_searchResults objectAtIndex:indexPath.row];
+            cell.imageView.image = nil;
+         }
         
-        cell.textLabel.text = [_searchResults objectAtIndex:indexPath.row];
-        cell.imageView.image = nil;
-         //添加“搜索结果”到 tableview 的headerview 上去。
-         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(6, 3, tableView.bounds.size.width - 10, 34)] ;
-         label.textColor = [UIColor colorWithRed:0.3 green:0.4 blue:0.8 alpha:0.8];
-         label.backgroundColor = [UIColor clearColor];
-         label.text =@"搜索结果";//设置分组标题
-         label.font = [UIFont fontWithName:@"Georgia-Bold" size:23];
-         label.textAlignment = NSTextAlignmentCenter;
-         [self.tableView.tableHeaderView addSubview:label];
-
-         
      }
      else
      {   cell.textLabel.text = [[cities objectForKey:key] objectAtIndex:indexPath.row];
@@ -355,7 +349,7 @@ NSArray *searchResultsCity;//搜索中间结果
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 36;
+    return 33;
 }
 
 /********************设置 sectionheader*********************/
@@ -374,8 +368,6 @@ NSArray *searchResultsCity;//搜索中间结果
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if(self.searchDc.active){return 1;
-    }
     return 40;
 }
 //自定义view
@@ -405,7 +397,16 @@ NSArray *searchResultsCity;//搜索中间结果
           label.textAlignment = NSTextAlignmentLeft;
           [headerView addSubview:label];
           }
-         }
+    }else{
+        //添加“搜索结果”到headerview 上去。
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(6, 3, tableView.bounds.size.width - 10, 34)] ;
+        label.textColor = [UIColor colorWithRed:0.3 green:0.4 blue:0.8 alpha:0.8];
+        label.backgroundColor = [UIColor clearColor];
+        label.text =@"搜索结果";//设置分组标题
+        label.font = [UIFont fontWithName:@"Georgia-Bold" size:23];
+        label.textAlignment = NSTextAlignmentCenter;
+        [headerView addSubview:label];
+    }
     [headerView setBackgroundColor:[UIColor clearColor]];
     return headerView ;
   
@@ -437,8 +438,11 @@ NSArray *searchResultsCity;//搜索中间结果
     for (NSString *object in searchResultsCity)
     {
         [_searchResults addObject:object];
+        
     }
-    dispatch_async(dispatch_get_main_queue(), ^{  [self.tableView reloadData];  });
+ 
+    dispatch_async(dispatch_get_main_queue(), ^{  [self.tableView reloadData];  });//这个可以防止搜索包到处乱跑，但是有时会带来内存泄露的崩溃问题
+  //   [self.tableView reloadData];
 }
 
 
@@ -467,6 +471,7 @@ NSArray *searchResultsCity;//搜索中间结果
     
     // Note that if you didn't hide your search bar, you should probably not include this, as it would be redundant
     [self.searchDc.searchBar becomeFirstResponder];
+   
 }
 
 
