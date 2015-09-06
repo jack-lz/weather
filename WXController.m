@@ -171,17 +171,17 @@
     [header addSubview:self.RefreshButton];
     
     
+   
     
-    
-    // 观察WXManager单例的currentCondition。
+    // 观察WXManager单例的currentCondition。改变动态分配建立的标签和按钮。它们和tableview 没有关系。
     [[RACObserve([WXManager sharedManager], currentCondition)
       //传递在主线程上的任何变化，因为你正在更新UI。
       deliverOn:RACScheduler.mainThreadScheduler]
      subscribeNext:^(WXCondition *newCondition) {
          if (newCondition) {
          //使用气象数据更新文本标签；你为文本标签使用newCondition的数据，而不是单例。订阅者的参数保证是最新值。
-         temperatureLabel.text = [NSString stringWithFormat:@"%.0f°",newCondition.temperature.floatValue];
-         
+         temperatureLabel.text = [NSString stringWithFormat:@"%.0f°",(newCondition.temperature.floatValue-32)*5/9];
+             
          conditionsLabel.text = [newCondition.condition capitalizedString];
          cityLabel.text = [newCondition.locationName capitalizedString];
          self.defaultCity=cityLabel.text;
@@ -197,7 +197,7 @@
                                                        RACObserve([WXManager sharedManager], currentCondition.tempLow)]
                              // 从合并的信号中，减少数值，转换成一个单一的数据，注意参数的顺序与信号的顺序相匹配。
                                               reduce:^(NSNumber *hi, NSNumber *low) {
-                                                  return [NSString  stringWithFormat:@"%.0f°/ %.0f°",hi.floatValue,low.floatValue];
+                                                  return [NSString  stringWithFormat:@"%.0f°/ %.0f°",(hi.floatValue-32)*5/9,(low.floatValue-32)*5/9];
                                               }] 
                             // 同样，因为你正在处理UI界面，所以把所有东西都传递到主线程。
                             deliverOn:RACScheduler.mainThreadScheduler];
@@ -206,7 +206,7 @@
     [[RACObserve([WXManager sharedManager], hourlyForecast)
       deliverOn:RACScheduler.mainThreadScheduler]
      subscribeNext:^(NSArray *newForecast) {
-         [self.tableView reloadData];
+        [self.tableView reloadData];
      }];
     
     [[RACObserve([WXManager sharedManager], dailyForecast)
@@ -229,7 +229,7 @@
                             __strong typeof(wself) self = wself;
                             
                            [[WXManager sharedManager] ChooseCityLocation:self.SelectCity];
-                            
+                        
                             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
                                            {
                                                [self.refreshView endRefreshing];
@@ -432,7 +432,7 @@
     cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:18];
     cell.detailTextLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:18];
     cell.textLabel.text = [self.hourlyFormatter stringFromDate:weather.date];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0f°",weather.temperature.floatValue];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0f°",(weather.temperature.floatValue-32)*5/9];
     cell.imageView.image = [UIImage imageNamed:[weather imageName]];
     cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
 }
@@ -443,8 +443,8 @@
     cell.detailTextLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:18];
     cell.textLabel.text = [self.dailyFormatter stringFromDate:weather.date];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0f° / %.0f°",
-                                 weather.tempHigh.floatValue,
-                                 weather.tempLow.floatValue];
+                                 (weather.tempHigh.floatValue-32)*5/9,
+                                 (weather.tempLow.floatValue-32)*5/9];
     cell.imageView.image = [UIImage imageNamed:[weather imageName]];
     cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
 }
