@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>DACircularProgress.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>HexColors.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -14,12 +19,27 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>LGHelper.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>LGRefreshView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Mantle.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>Pods.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Reachability.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -37,7 +57,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>1893DE70459B9C5430E1E53597BF9817</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>18A4BA8BFD66F76A5A3AE5290D46B994</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>246A5300638231D65921092AE225D5DD</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4014AC76B9A5532AEB24C9A128B724E7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>5F4B6B303199F876C47F4058AF965101</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -47,22 +87,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8ED412B2C7D0F93948DC124F6529A027</key>
+		<key>C15E448A04BC7974D9CFBC68345779CA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B6BC0CDD8C63A733B9EE41E2156E3411</key>
+		<key>D0D35AD7400C0110A88395E45898DBCB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D5120A52FE3C60BBADE9BB330C47F021</key>
+		<key>D7FA54309057E33F753CBF2FD44B6D28</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>DF592ED5E455857F63087BDAEF2FD983</key>
+		<key>E62ECFE93583B2EDC2A68AB77738BFED</key>
 		<dict>
 			<key>primary</key>
 			<true/>

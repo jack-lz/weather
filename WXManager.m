@@ -154,7 +154,7 @@
           // 设置currentLocation，将触发您之前在init中设置的RACObservable。
           self.currentLocation = location;
            //选择是否停止进一步的更新。选择将只是读取一次。
-          // [self.locationManager stopUpdatingLocation];
+           [self.locationManager stopUpdatingLocation];
           }
 }
 

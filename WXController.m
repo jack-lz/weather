@@ -10,7 +10,8 @@
 #import <LBBlurredImage/UIImageView+LBBlurredImage.h>
 #import "CityListViewController.h"
 #import "AppDelegate.h"
-
+#import "LGRefreshView.h"
+#import "LGHelper.h"
 
 @interface WXController ()
 @property (nonatomic, strong) UIImageView *backgroundImageView;
@@ -22,7 +23,8 @@
 @property (nonatomic, strong) UIButton *cityButton;
 @property (nonatomic, strong) NSString *defaultCity;//全局变量，专用于给下一视图传送当前城市的
 @property (nonatomic, strong) NSString *SelectCity;
-
+@property (strong, nonatomic) LGRefreshView *refreshView;
+@property (strong, nonatomic) UIButton      *RefreshButton;
 
 
 
@@ -33,6 +35,9 @@
 - (void)viewDidLoad {
     
     [super viewDidLoad];
+    
+   self.SelectCity = @"定位到当前位置";
+    
     // 获取并存储屏幕高度。之后，你将在用分页的方式来显示所有天气数据时，使用它。
     self.screenHeight = [UIScreen mainScreen].bounds.size.height;
     UIImage *background = [UIImage imageNamed:@"bg"];
@@ -54,8 +59,10 @@
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    self.tableView.alwaysBounceVertical = YES;
+    self.tableView.allowsSelection = NO;
     self.tableView.separatorColor = [UIColor colorWithWhite:1 alpha:0.2];
-    self.tableView.pagingEnabled = YES; 
+  //  self.tableView.pagingEnabled = YES;//翻页会影响下拉延时，在后面的滚动函数中视滚动量来设置比较好
     [self.view addSubview:self.tableView];
     
     // 设置table的header大小与屏幕相同。你将利用的UITableView的分页来分隔页面页头和每日每时的天气预报部分。
@@ -86,7 +93,7 @@
     conditionsFrame.size.width = self.view.bounds.size.width - (((2 * inset) + iconHeight) + 10);
     conditionsFrame.origin.x = iconFrame.origin.x + (iconHeight +10);
     
-    // 设置当前view为你的table header。
+    // 设置你的table header。
     UIView *header = [[UIView alloc] initWithFrame:headerFrame];
     header.backgroundColor = [UIColor clearColor];
     self.tableView.tableHeaderView = header;
@@ -143,9 +150,26 @@
     [self.cityButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];//title color
     self.cityButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:16];
     [self.cityButton addTarget:self action:@selector(CityButtonUp:) forControlEvents:UIControlEventTouchUpInside];//添加 action
-     [self.cityButton addTarget:self action:@selector(CityButtondown:) forControlEvents:UIControlEventTouchDown];//添加 action
+    [self.cityButton  setBackgroundImage:[LGHelper image1x1WithColor:[UIColor blueColor]] forState:UIControlStateHighlighted];
+    [self.cityButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
     self.cityButton .userInteractionEnabled=YES;//使能可以点击
     [header addSubview:self.cityButton];
+    
+    self.RefreshButton = [[UIButton alloc] initWithFrame:CGRectMake(15,23, 45, 28)];
+    self.RefreshButton.backgroundColor = [UIColor clearColor];
+    [self.RefreshButton.layer setMasksToBounds:YES];//方法告诉layer将位于它之下的layer都遮盖
+    [self.RefreshButton.layer setCornerRadius:10.0]; //设置矩形四个圆角半径
+    [self.RefreshButton.layer setBorderWidth:0.8]; //边框宽度
+    [self.RefreshButton setTitle: @"Refresh" forState:UIControlStateNormal];//设置 title
+    self.RefreshButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.RefreshButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];//title color
+    self.RefreshButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:10];
+    [self.RefreshButton addTarget:self action:@selector(RefreshAction) forControlEvents:UIControlEventTouchUpInside];//添加 action
+    [self.RefreshButton  setBackgroundImage:[LGHelper image1x1WithColor:[UIColor blueColor]] forState:UIControlStateHighlighted];
+    [self.RefreshButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    self.RefreshButton .userInteractionEnabled=YES;//使能可以点击
+    [header addSubview:self.RefreshButton];
+    
     
     
     
@@ -195,7 +219,27 @@
     //这告诉管理类，开始寻找设备的当前位置。
     [[WXManager sharedManager] findCurrentLocation];
     
-   
+    //下拉刷新
+    __weak typeof(self) wself = self;
+    
+    self.refreshView = [LGRefreshView refreshViewWithScrollView:self.tableView refreshHandler:^(LGRefreshView *refreshView)
+                    {
+                        if (wself)
+                        {
+                            __strong typeof(wself) self = wself;
+                            
+                           [[WXManager sharedManager] ChooseCityLocation:self.SelectCity];
+                            
+                            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
+                                           {
+                                               [self.refreshView endRefreshing];
+                                           });
+                        }
+                    }];
+    
+     UIColor *CustomColor = [UIColor colorWithRed:0.3 green:0.3 blue:0.5 alpha:0.3f];
+    self.refreshView.tintColor = CustomColor ;
+    self.refreshView.backgroundColor = [UIColor clearColor];
 }
 
 //在WXController.m中，你的视图控制器调用该方法来编排其子视图。
@@ -269,7 +313,7 @@
     self.SelectCity= selectedCity;//从 WXManger 传值回来
     NSLog(@"%@",self.SelectCity);
     
-    [[WXManager sharedManager] ChooseCityLocation:self.SelectCity];//
+    [[WXManager sharedManager] ChooseCityLocation:self.SelectCity];//改变 currentCondition的值
 
 }
 
@@ -298,7 +342,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"CellIdentifier";
+    static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (! cell) {
@@ -411,6 +455,11 @@
     // 获取滚动视图的高度和内容偏移量。与0偏移量做比较，因此试图滚动table低于初始位置将不会影响模糊效果。
     CGFloat height = scrollView.bounds.size.height;
     CGFloat position = MAX(scrollView.contentOffset.y, 0.0);
+    //通过滚动的量来区分下拉刷新和翻页，因为 翻页效果会影响下拉的延时效果
+    if (position>100.0) {
+        self.tableView.pagingEnabled = YES;
+    }else {self.tableView.pagingEnabled = NO;}
+    
     // 偏移量除以高度，并且最大值为1，所以alpha上限为1。
     CGFloat percent = MIN(position / height, 1.0);
     // 当你滚动的时候，把结果值赋给模糊图像的alpha属性，来更改模糊图像。
@@ -418,6 +467,23 @@
 }
 
 
+
+
+/** It's not necessary, but better doing like so */
+- (BOOL)shouldAutorotate
+{
+    return !self.refreshView.isRefreshing;
+}
+
+
+#pragma mark -
+
+- (void)RefreshAction
+{
+    self.tableView.contentOffset = CGPointMake(0.0, -80.0); //实现下拉效果，注意位移点的y值为负值
+    
+    [self.refreshView triggerAnimated:YES];
+}
 
 /*
 #pragma mark - Navigation
