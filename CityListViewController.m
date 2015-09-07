@@ -441,7 +441,7 @@ NSArray *searchResultsCity;//搜索中间结果
         
     }
  
-    dispatch_async(dispatch_get_main_queue(), ^{  [self.tableView reloadData];  });//这个可以防止搜索包到处乱跑，但是有时会带来内存泄露的崩溃问题
+    dispatch_async(dispatch_get_main_queue(), ^{  [self.tableView reloadData];  });//这个是异步执行，将右边的参数（任务）提交给左边的参数（队列）进行执行。同步：在当前线程中执行，异步：在另一条线程中执行
   //   [self.tableView reloadData];
 }
 

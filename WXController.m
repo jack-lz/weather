@@ -23,8 +23,8 @@
 @property (nonatomic, strong) UIButton *cityButton;
 @property (nonatomic, strong) NSString *defaultCity;//全局变量，专用于给下一视图传送当前城市的
 @property (nonatomic, strong) NSString *SelectCity;
-@property (strong, nonatomic) LGRefreshView *refreshView;
-@property (strong, nonatomic) UIButton      *RefreshButton;
+@property (nonatomic, strong) LGRefreshView *refreshView;
+@property (nonatomic, strong) UIButton      *RefreshButton;
 
 
 
