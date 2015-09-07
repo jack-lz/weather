@@ -136,9 +136,20 @@
     cityLabel.backgroundColor = [UIColor clearColor];
     cityLabel.textColor = [UIColor whiteColor];
     cityLabel.text = @"Loading...";
-    cityLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:22];
+    cityLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:25];
     cityLabel.textAlignment = NSTextAlignmentCenter;
     [header addSubview:cityLabel];
+    
+    // top
+    UILabel *dataLabel = [[UILabel alloc] initWithFrame:CGRectMake(75, 50, self.view.bounds.size.width-150, 18)];
+    dataLabel.backgroundColor = [UIColor clearColor];
+    dataLabel.textColor = [UIColor whiteColor];
+    dataLabel.text = @"Loading...";
+    dataLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
+    dataLabel.textAlignment = NSTextAlignmentCenter;
+    [header addSubview:dataLabel];
+    
+    
     // top
     self.cityButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-50,23, 45, 28)];
     self.cityButton.backgroundColor = [UIColor clearColor];
@@ -180,13 +191,22 @@
      subscribeNext:^(WXCondition *newCondition) {
          if (newCondition) {
          //使用气象数据更新文本标签；你为文本标签使用newCondition的数据，而不是单例。订阅者的参数保证是最新值。
-         temperatureLabel.text = [NSString stringWithFormat:@"%.0f°",(newCondition.temperature.floatValue-32)*5/9];
+        cityLabel.text = [newCondition.locationName capitalizedString];
+            
+        NSDate *date = [NSDate date];
+        NSDateFormatter *dateFormatter = [NSDateFormatter new];
+        dateFormatter.dateFormat = @"yyyy.MM.dd HH:mm:ss";
+        dataLabel.text = [NSString stringWithFormat:@"Updated at %@", [dateFormatter stringFromDate:date]];
+        
+        //使用映射的图像文件名来创建一个图像，并将其设置为视图的图标。
+        iconView.image = [UIImage imageNamed:[newCondition imageName]];
              
-         conditionsLabel.text = [newCondition.condition capitalizedString];
-         cityLabel.text = [newCondition.locationName capitalizedString];
-         self.defaultCity=cityLabel.text;
-         //使用映射的图像文件名来创建一个图像，并将其设置为视图的图标。
-         iconView.image = [UIImage imageNamed:[newCondition imageName]];
+        conditionsLabel.text = [newCondition.condition capitalizedString];
+    
+        temperatureLabel.text = [NSString stringWithFormat:@"%.0f°",(newCondition.temperature.floatValue-32)*5/9];
+             
+        self.defaultCity=cityLabel.text;
+         
          }
      }];
     
@@ -311,7 +331,7 @@
 - (void)citySelectionUpdate:(NSString *) selectedCity
 {
     self.SelectCity= selectedCity;//从 WXManger 传值回来
-    NSLog(@"%@",self.SelectCity);
+//NSLog(@"%@",self.SelectCity);
     
     [[WXManager sharedManager] ChooseCityLocation:self.SelectCity];//改变 currentCondition的值
 

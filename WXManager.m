@@ -112,23 +112,23 @@
    CFStringTransform(string, NULL, kCFStringTransformMandarinLatin, NO);//转换为拼音
    CFStringTransform(string, NULL, kCFStringTransformStripDiacritics, NO);//去掉音标
     NSString *oreillyAddress = [(__bridge NSString *)(string) stringByReplacingOccurrencesOfString:@" " withString:@""];//去掉字符间的空格
-    NSLog(@"%@", oreillyAddress );
+// NSLog(@"%@", oreillyAddress );
         
     CLGeocoder *myGeocoder = [[CLGeocoder alloc] init];
     [myGeocoder geocodeAddressString:oreillyAddress completionHandler:^(NSArray *placemarks, NSError *error) {
         if ([placemarks count] > 0 && error == nil) {
-            NSLog(@"Found %lu placemark(s).", (unsigned long)[placemarks count]);
+//NSLog(@"Found %lu placemark(s).", (unsigned long)[placemarks count]);
             CLPlacemark *firstPlacemark = [placemarks objectAtIndex:0];
-          //  NSLog(@"Longitude = %f", firstPlacemark.location.coordinate.longitude);
-          //  NSLog(@"Latitude = %f", firstPlacemark.location.coordinate.latitude);
-          //    self.SelectCity=[[CLLocation alloc] initWithLatitude:39.55  longitude:116.23];
+//NSLog(@"Longitude = %f", firstPlacemark.location.coordinate.longitude);
+//NSLog(@"Latitude = %f", firstPlacemark.location.coordinate.latitude);
+      //self.SelectCity=[[CLLocation alloc] initWithLatitude:39.55  longitude:116.23];
            self.SelectCity=[[CLLocation alloc] initWithLatitude:firstPlacemark.location.coordinate.latitude longitude:firstPlacemark.location.coordinate.longitude];
             self.currentLocation = self.SelectCity;
         }
         else if ([placemarks count] == 0 && error == nil) {
-            NSLog(@"Found no placemarks.");
+//NSLog(@"Found no placemarks.");
         } else if (error != nil) {
-            NSLog(@"An error occurred = %@", error);
+//NSLog(@"An error occurred = %@", error);
         }  
     }];
     }

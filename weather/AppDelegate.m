@@ -31,6 +31,13 @@
     [self.window makeKeyAndVisible];
     // 设置默认的视图控制器来显示你的TSMessages。这样做，你将不再需要手动指定要使用的控制器来显示警告。
     [TSMessage setDefaultViewController: self.window.rootViewController];
+    
+    
+       // Override point for customization after application launch.
+    [NSThread sleepForTimeInterval:1.3];
+    [self.window makeKeyAndVisible];
+    
+    
     return YES;
 }
 

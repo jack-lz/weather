@@ -387,7 +387,7 @@ NSArray *searchResultsCity;//搜索中间结果
     {
           if(section == 0 ){
           label.text =[@"Current City: " stringByAppendingString:self.defaultCity];
-          label.textColor = [UIColor blackColor];
+          label.textColor = [UIColor whiteColor];
           label.textAlignment = NSTextAlignmentCenter;
           label.font = [UIFont fontWithName:@"Georgia-Bold" size:18];
           [headerView addSubview:label];
