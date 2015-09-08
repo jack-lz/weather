@@ -37,6 +37,7 @@
         NSURLSessionDataTask *dataTask = [self.session dataTaskWithURL:url completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
             if (! error) {
                 NSError *jsonError = nil;
+                //序列化
                 id json = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&jsonError];
                 if (! jsonError) {
                     // 当JSON数据存在并且没有错误，发送给订阅者序列化后的JSON数组或字典。

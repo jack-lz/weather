@@ -73,6 +73,7 @@
     CGFloat temperatureHeight = 180;
     CGFloat hiloHeight = 40;
     CGFloat iconHeight = 70;
+    CGFloat windHeight = 20;
     // 使用常量和inset变量，为label和view创建框架。
     CGRect hiloFrame = CGRectMake(inset,
                                   headerFrame.size.height - hiloHeight,
@@ -99,7 +100,7 @@
     self.tableView.tableHeaderView = header;
     
     // 构建每一个显示气象数据的标签。
-    // bottom left
+    // bottom right
     UILabel *temperatureLabel = [[UILabel alloc] initWithFrame:temperatureFrame];
     temperatureLabel.backgroundColor = [UIColor clearColor];
     temperatureLabel.textColor = [UIColor whiteColor];
@@ -108,7 +109,7 @@
     temperatureLabel.textAlignment = NSTextAlignmentRight;
     [header addSubview:temperatureLabel];
     
-    // bottom left
+    // bottom right
     UILabel *hiloLabel = [[UILabel alloc] initWithFrame:hiloFrame];
     hiloLabel.backgroundColor = [UIColor clearColor];
     hiloLabel.textColor = [UIColor whiteColor];
@@ -116,6 +117,19 @@
     hiloLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:37];
     hiloLabel.textAlignment = NSTextAlignmentRight;
     [header addSubview:hiloLabel];
+   
+    //bottom right
+    UILabel *windLabel = [[UILabel alloc] initWithFrame: CGRectMake(headerFrame.size.width/2.5,
+                                                                         headerFrame.size.height - (temperatureHeight +2*windHeight),
+                                                                         headerFrame.size.width/2,
+                                                                         windHeight)];
+    windLabel.backgroundColor = [UIColor clearColor];
+    windLabel.textColor = [UIColor whiteColor];
+    windLabel.text = @"Loading...";
+    windLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:20];
+    windLabel.textAlignment = NSTextAlignmentCenter;
+    [header addSubview:windLabel];
+    
     
     //添加一个天气图标的图像视图。
     // bottom left
@@ -148,7 +162,7 @@
     dataLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:13];
     dataLabel.textAlignment = NSTextAlignmentCenter;
     [header addSubview:dataLabel];
-    
+   
     
     // top
     self.cityButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-50,23, 45, 28)];
@@ -192,19 +206,100 @@
          if (newCondition) {
          //使用气象数据更新文本标签；你为文本标签使用newCondition的数据，而不是单例。订阅者的参数保证是最新值。
         cityLabel.text = [newCondition.locationName capitalizedString];
-            
         NSDate *date = [NSDate date];
         NSDateFormatter *dateFormatter = [NSDateFormatter new];
         dateFormatter.dateFormat = @"yyyy.MM.dd HH:mm:ss";
         dataLabel.text = [NSString stringWithFormat:@"Updated at %@", [dateFormatter stringFromDate:date]];
-        
         //使用映射的图像文件名来创建一个图像，并将其设置为视图的图标。
         iconView.image = [UIImage imageNamed:[newCondition imageName]];
              
-        conditionsLabel.text = [newCondition.condition capitalizedString];
-    
-        temperatureLabel.text = [NSString stringWithFormat:@"%.0f°",(newCondition.temperature.floatValue-32)*5/9];
+        //风向和风速
+             NSString *windbearing=[[NSString alloc]init];
+             switch (newCondition.windBearing.integerValue/10)
+             {
+                 case 34:case 35:case 36:case 0:case 1:
+                    windbearing=@"北风";
+                     break;
+                 case 2:case 3:case 4:case 5:case 6:
+                    windbearing=@"东北风";
+                     break;
+                 case 7:case 8:case 9:case 10:
+                    windbearing=@"东风";
+                    break;
+                 case 11:case 12:case 13:case 14:case 15:
+                    windbearing=@"东南风";
+                     break;
+                 case 16:case 17:case 18:case 19:
+                     windbearing=@"南风";
+                     break;
+                 case 20:case 21:case 22:case 23:case 24:
+                     windbearing=@"西南风";
+                     break;
+                 case 25:case 26:case 27:case 28:
+                     windbearing=@"西风";
+                     break;
+                 case 29:case 30:case 31:case 32:case 33:
+                     windbearing=@"西北风";
+                     break;
+                 default:
+                     break;
+             }
              
+             int intValue=(int)ceilf(newCondition.windSpeed.floatValue);
+             NSString *windspeed=[[NSString alloc]init];
+             switch (intValue)
+             {
+                 case 0:case 1:
+                    windspeed=@"0级 无风";
+                     break;
+                 case 2:case 3:case 4:case 5:
+                     windspeed=@"1级 软风";
+                     break;
+                 case 6:case 7:case 8:case 9:case 10:case 11:
+                     windspeed=@"2级 轻风";
+                     break;
+                 case 12:case 13:case 14:case 15:case 16:case 17:case 18:case 19:
+                     windspeed=@"3级 微风";
+                     break;
+                 case 20:case 21:case 22:case 23:case 24:case 25:case 26:case 27:case 28:
+                     windspeed=@"4级 和风";
+                     break;
+                 case 29:case 30:case 31:case 32:case 33:case 34:case 35:case 36:case 37:case 38:
+                     windspeed=@"5级 清风";
+                     break;
+                 case 39:case 40:case 41:case 42:case 43:case 44:case 45:case 46:case 47:case 48:case 49:
+                     windspeed=@"6级 强风";
+                     break;
+                 case 50:case 51:case 52:case 53:case 54:case 55:case 56:case 57:case 58:case 59:case 60:case 61:
+                     windspeed=@"7级 疾风";
+                     break;
+                 case 62:case 63:case 64:case 65:case 66:case 67:case 68:case 69:case 70:case 71:case 72:case 73:case 74:
+                     windspeed=@"8级 大风";
+                     break;
+                 case 75:case 76:case 77:case 78:case 79:case 80:case 81:case 82:case 83:case 84:case 85:case 86:case 87:case 88:
+                     windspeed=@"9级 烈风";
+                     break;
+                 case 89:case 90:case 91:case 92:case 93:case 94:case 95:case 96:case 97:case 98:case 99:case 100:case 101:case 102:
+                     windspeed=@"10级 狂风";
+                     break;
+                 case 103:case 104:case 105:case 106:case 107:case 108:case 109:case 110:case 111:case 112:case 113:case 114:case 115:case 116:case 117:
+                     windspeed=@"11级 暴风";
+                     break;
+                 default:
+                     windspeed=@"12级 台风";
+                     break;
+             }
+             
+       windLabel.text = [NSString stringWithFormat:@"    %@  %@",windbearing,windspeed];
+             
+        //改变背景，从下标8开始抽取到字符串结束，包括8，搜索到背景图片
+        self.backgroundImageView.image = [UIImage imageNamed:[[newCondition imageName] substringFromIndex:8]];
+             
+       //self.blurredImageView.image = [UIImage imageNamed:[[newCondition imageName] substringFromIndex:8]];
+       [self.blurredImageView setImageToBlur:[UIImage imageNamed:[[newCondition imageName] substringFromIndex:8]] blurRadius:10 completionBlock:nil];
+        conditionsLabel.text = [newCondition.condition capitalizedString];//首字母大写
+        temperatureLabel.text = [NSString stringWithFormat:@"%.0f°",(newCondition.temperature.floatValue-32)*5/9];
+
         self.defaultCity=cityLabel.text;
          
          }
@@ -276,7 +371,6 @@
 - (void)viewDidLayoutSubviews{
     [super viewDidLayoutSubviews];
 
-  
 
 }
 
@@ -479,7 +573,6 @@
     if (position>100.0) {
         self.tableView.pagingEnabled = YES;
     }else {self.tableView.pagingEnabled = NO;}
-    
     // 偏移量除以高度，并且最大值为1，所以alpha上限为1。
     CGFloat percent = MIN(position / height, 1.0);
     // 当你滚动的时候，把结果值赋给模糊图像的alpha属性，来更改模糊图像。

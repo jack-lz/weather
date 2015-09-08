@@ -45,7 +45,7 @@
 }
 
 
-//“JSON到模型属性”的映射，且该方法是MTLJSONSerializing协议的require。
+//“JSON到模型属性”的映射，且该方法是MTLJSONSerializing协议的require。在这个方法里，dictionary的key是WXCondition的属性名称，而dictionary的value是JSON的路径。
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
     return @{
              @"date": @"dt",
