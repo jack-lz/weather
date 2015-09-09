@@ -12,10 +12,7 @@
 		563D77101B84959C00533BD0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 563D770F1B84959C00533BD0 /* main.m */; };
 		563D77131B84959C00533BD0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 563D77121B84959C00533BD0 /* AppDelegate.m */; };
 		563D77161B84959C00533BD0 /* weather.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 563D77141B84959C00533BD0 /* weather.xcdatamodeld */; };
-		563D77191B84959C00533BD0 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 563D77181B84959C00533BD0 /* ViewController.m */; };
-		563D771C1B84959C00533BD0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 563D771A1B84959C00533BD0 /* Main.storyboard */; };
 		563D771E1B84959C00533BD0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 563D771D1B84959C00533BD0 /* Images.xcassets */; };
-		563D77211B84959C00533BD0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 563D771F1B84959C00533BD0 /* LaunchScreen.xib */; };
 		563D772D1B84959C00533BD0 /* weatherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 563D772C1B84959C00533BD0 /* weatherTests.m */; };
 		56501D771B933C1400659378 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56501D761B933C1400659378 /* MapKit.framework */; };
 		56CCF6A21B8497F900435736 /* WXController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CCF6A11B8497F900435736 /* WXController.m */; };
@@ -83,6 +80,9 @@
 		56E2D9621B8B86DD00A9FB42 /* bp@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 56E2D9601B8B86DD00A9FB42 /* bp@2x.png */; };
 		56E2D9641B8BD12E00A9FB42 /* citydict.plist in Resources */ = {isa = PBXBuildFile; fileRef = 56E2D9631B8BD12E00A9FB42 /* citydict.plist */; };
 		56E37E861B87690A0092940E /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56E37E851B87690A0092940E /* CoreLocation.framework */; };
+		56E5C2791BA093E6006996D0 /* ScaleAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E5C2761BA093E6006996D0 /* ScaleAnimation.m */; };
+		56E5C27A1BA093E6006996D0 /* ShuffleAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E5C2781BA093E6006996D0 /* ShuffleAnimation.m */; };
+		56E5C27D1BA093EF006996D0 /* BaseAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E5C27C1BA093EF006996D0 /* BaseAnimation.m */; };
 		9894B2BF07D9D2742AEDF4A3 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DC3A0338BB311E5532F8E1A /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -106,11 +106,7 @@
 		563D77111B84959C00533BD0 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		563D77121B84959C00533BD0 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		563D77151B84959C00533BD0 /* weather.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = weather.xcdatamodel; sourceTree = "<group>"; };
-		563D77171B84959C00533BD0 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		563D77181B84959C00533BD0 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		563D771B1B84959C00533BD0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		563D771D1B84959C00533BD0 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		563D77201B84959C00533BD0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		563D77261B84959C00533BD0 /* weatherTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = weatherTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		563D772B1B84959C00533BD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		563D772C1B84959C00533BD0 /* weatherTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = weatherTests.m; sourceTree = "<group>"; };
@@ -186,6 +182,12 @@
 		56E2D9601B8B86DD00A9FB42 /* bp@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bp@2x.png"; sourceTree = "<group>"; };
 		56E2D9631B8BD12E00A9FB42 /* citydict.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = citydict.plist; sourceTree = "<group>"; };
 		56E37E851B87690A0092940E /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		56E5C2751BA093E6006996D0 /* ScaleAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScaleAnimation.h; sourceTree = "<group>"; };
+		56E5C2761BA093E6006996D0 /* ScaleAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScaleAnimation.m; sourceTree = "<group>"; };
+		56E5C2771BA093E6006996D0 /* ShuffleAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShuffleAnimation.h; sourceTree = "<group>"; };
+		56E5C2781BA093E6006996D0 /* ShuffleAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuffleAnimation.m; sourceTree = "<group>"; };
+		56E5C27B1BA093EF006996D0 /* BaseAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseAnimation.h; sourceTree = "<group>"; };
+		56E5C27C1BA093EF006996D0 /* BaseAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseAnimation.m; sourceTree = "<group>"; };
 		7890861192F027612F589DF2 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		F213C1E56458C0E931317171 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -253,6 +255,7 @@
 				56CCF6A01B8497F900435736 /* WXController.h */,
 				56CCF6A11B8497F900435736 /* WXController.m */,
 				56CCF6A31B84991E00435736 /* Images */,
+				56E5C2701BA06E37006996D0 /* Animation */,
 				563D770C1B84959C00533BD0 /* weather */,
 				563D77291B84959C00533BD0 /* weatherTests */,
 				563D770B1B84959C00533BD0 /* Products */,
@@ -275,11 +278,7 @@
 			children = (
 				563D77111B84959C00533BD0 /* AppDelegate.h */,
 				563D77121B84959C00533BD0 /* AppDelegate.m */,
-				563D77171B84959C00533BD0 /* ViewController.h */,
-				563D77181B84959C00533BD0 /* ViewController.m */,
-				563D771A1B84959C00533BD0 /* Main.storyboard */,
 				563D771D1B84959C00533BD0 /* Images.xcassets */,
-				563D771F1B84959C00533BD0 /* LaunchScreen.xib */,
 				563D77141B84959C00533BD0 /* weather.xcdatamodeld */,
 				563D770D1B84959C00533BD0 /* Supporting Files */,
 			);
@@ -400,6 +399,19 @@
 			name = CityList;
 			sourceTree = "<group>";
 		};
+		56E5C2701BA06E37006996D0 /* Animation */ = {
+			isa = PBXGroup;
+			children = (
+				56E5C27B1BA093EF006996D0 /* BaseAnimation.h */,
+				56E5C27C1BA093EF006996D0 /* BaseAnimation.m */,
+				56E5C2751BA093E6006996D0 /* ScaleAnimation.h */,
+				56E5C2761BA093E6006996D0 /* ScaleAnimation.m */,
+				56E5C2771BA093E6006996D0 /* ShuffleAnimation.h */,
+				56E5C2781BA093E6006996D0 /* ShuffleAnimation.m */,
+			);
+			name = Animation;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -488,7 +500,6 @@
 				56DD13B21B9E500B0053ED18 /* few-night@2x.png in Resources */,
 				56CCF6C71B84991E00435736 /* weather-few.png in Resources */,
 				56CCF6CF1B84991E00435736 /* weather-rain.png in Resources */,
-				563D771C1B84959C00533BD0 /* Main.storyboard in Resources */,
 				56CCF6C81B84991E00435736 /* weather-few@2x.png in Resources */,
 				56CCF6C21B84991E00435736 /* weather-broken@2x.png in Resources */,
 				56DD13B71B9E500B0053ED18 /* moon.png in Resources */,
@@ -498,7 +509,6 @@
 				56CCF6D71B84991E00435736 /* weather-tstorm.png in Resources */,
 				56CCF6D81B84991E00435736 /* weather-tstorm@2x.png in Resources */,
 				56DD13B31B9E500B0053ED18 /* few.png in Resources */,
-				563D77211B84959C00533BD0 /* LaunchScreen.xib in Resources */,
 				56DD13AE1B9E500B0053ED18 /* broken@2x.png in Resources */,
 				56DD13BE1B9E500B0053ED18 /* scattered@2x.png in Resources */,
 				56E2D9611B8B86DD00A9FB42 /* bp.png in Resources */,
@@ -595,11 +605,13 @@
 				56CCF6DB1B84C82200435736 /* WXManager.m in Sources */,
 				563D77161B84959C00533BD0 /* weather.xcdatamodeld in Sources */,
 				56CCF6E71B84E0E300435736 /* WXClient.m in Sources */,
+				56E5C2791BA093E6006996D0 /* ScaleAnimation.m in Sources */,
 				563D77131B84959C00533BD0 /* AppDelegate.m in Sources */,
-				563D77191B84959C00533BD0 /* ViewController.m in Sources */,
 				56CCF6A21B8497F900435736 /* WXController.m in Sources */,
 				56CCF6E11B84C89000435736 /* WXDailyForecast.m in Sources */,
+				56E5C27D1BA093EF006996D0 /* BaseAnimation.m in Sources */,
 				563D77101B84959C00533BD0 /* main.m in Sources */,
+				56E5C27A1BA093E6006996D0 /* ShuffleAnimation.m in Sources */,
 				56CCF6DE1B84C86100435736 /* WXCondition.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -621,25 +633,6 @@
 			targetProxy = 563D77271B84959C00533BD0 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		563D771A1B84959C00533BD0 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				563D771B1B84959C00533BD0 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		563D771F1B84959C00533BD0 /* LaunchScreen.xib */ = {
-			isa = PBXVariantGroup;
-			children = (
-				563D77201B84959C00533BD0 /* Base */,
-			);
-			name = LaunchScreen.xib;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		563D772E1B84959C00533BD0 /* Debug */ = {

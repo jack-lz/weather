@@ -12,8 +12,16 @@
 #import "AppDelegate.h"
 #import "LGRefreshView.h"
 #import "LGHelper.h"
+#import "ShuffleAnimation.h"
+#import "ScaleAnimation.h"
+
+
 
 @interface WXController ()
+{
+    ShuffleAnimation *_shuffleAnimationController;
+    ScaleAnimation *_scaleAnimationController;
+}
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 @property (nonatomic, strong) UIImageView *blurredImageView;
 @property (nonatomic, strong) UITableView *tableView;
@@ -26,8 +34,6 @@
 @property (nonatomic, strong) LGRefreshView *refreshView;
 @property (nonatomic, strong) UIButton      *RefreshButton;
 
-
-
 @end
 
 @implementation WXController
@@ -37,6 +43,8 @@
     [super viewDidLoad];
     
    self.SelectCity = @"定位到当前位置";
+   self.navigationController.delegate=self;//设置委托，使得 Navigation Controller Delegate中的两个方法生效
+  
     
     // 获取并存储屏幕高度。之后，你将在用分页的方式来显示所有天气数据时，使用它。
     self.screenHeight = [UIScreen mainScreen].bounds.size.height;
@@ -165,12 +173,12 @@
    
     
     // top
-    self.cityButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-50,23, 45, 28)];
+    self.cityButton = [[UIButton alloc] initWithFrame:CGRectMake(15,23, 45, 28)];
     self.cityButton.backgroundColor = [UIColor clearColor];
     [self.cityButton.layer setMasksToBounds:YES];//方法告诉layer将位于它之下的layer都遮盖
     [self.cityButton.layer setCornerRadius:10.0]; //设置矩形四个圆角半径
     [self.cityButton.layer setBorderWidth:0.8]; //边框宽度
-    [self.cityButton setTitle: @"City >" forState:UIControlStateNormal];//设置 title
+    [self.cityButton setTitle: @"City" forState:UIControlStateNormal];//设置 title
     self.cityButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     [self.cityButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];//title color
     self.cityButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:16];
@@ -180,7 +188,7 @@
     self.cityButton .userInteractionEnabled=YES;//使能可以点击
     [header addSubview:self.cityButton];
     
-    self.RefreshButton = [[UIButton alloc] initWithFrame:CGRectMake(15,23, 45, 28)];
+    self.RefreshButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-50,23, 45, 28)];
     self.RefreshButton.backgroundColor = [UIColor clearColor];
     [self.RefreshButton.layer setMasksToBounds:YES];//方法告诉layer将位于它之下的layer都遮盖
     [self.RefreshButton.layer setCornerRadius:10.0]; //设置矩形四个圆角半径
@@ -304,7 +312,7 @@
          
          }
      }];
-    
+    //wxzhao，函数太长，尽量使用 ios 自带的监听函数。
     // RAC（…）宏有助于保持语法整洁。从该信号的返回值将被分配给hiloLabel对象的text。
     RAC(hiloLabel, text) = [[RACSignal combineLatest:@[
                                                        // 观察currentCondition的高温和低温。合并信号，并使用两者最新的值。当任一数据变化时，信号就会触发。
@@ -416,7 +424,42 @@
 }
 
 
-//这是委托协议的2个函数，给被代理类（委托方）调用的。
+
+
+#pragma mark - Navigation Controller Delegate
+
+-(id<UIViewControllerAnimatedTransitioning>)navigationController:(UINavigationController *)navigationController animationControllerForOperation:(UINavigationControllerOperation)operation fromViewController:(UIViewController *)fromVC toViewController:(UIViewController *)toVC {
+    
+  
+    BaseAnimation *animationController;
+//   _scaleAnimationController=[[ScaleAnimation alloc] init];
+//    animationController = _scaleAnimationController;
+    _shuffleAnimationController=[[ShuffleAnimation alloc]  init];
+    animationController = _shuffleAnimationController;
+    switch (operation) {
+        case UINavigationControllerOperationPush:
+            animationController.type = AnimationTypePresent;
+             break;
+        case UINavigationControllerOperationPop:
+            animationController.type = AnimationTypeDismiss;
+            break;
+        default: return nil;
+    }
+    return  animationController;
+    
+}
+
+-(id<UIViewControllerInteractiveTransitioning>)navigationController:(UINavigationController *)navigationController interactionControllerForAnimationController:(id<UIViewControllerAnimatedTransitioning>)animationController {
+    //    if ([animationController isKindOfClass:[ScaleAnimation class]]) {
+    //        ScaleAnimation *controller = (ScaleAnimation *)animationController;
+    //        if (controller.isInteractive) return controller;
+    //        else return nil;
+    //    } else
+    return nil;
+}
+
+
+//这是和 CityListViewController 类之间委托协议的2个函数，给被代理类（委托方）调用的。
 - (NSString*) getDefaultCity
 {
     return self.defaultCity;//向 WXManager 传值
@@ -447,16 +490,20 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // 第一部分是对的逐时预报。使用最近6小时的预预报，并添加了一个作为页眉的单元格。
+    
+    NSInteger count= MIN([[WXManager sharedManager].dailyForecast count], 6) + 1;
    if (section == 0) {
-     return MIN([[WXManager sharedManager].hourlyForecast count], 6) + 1;
+       count=MIN([[WXManager sharedManager].hourlyForecast count], 6) + 1;
+       
     }
+    
     // 接下来的部分是每日预报。使用最近6天的每日预报，并添加了一个作为页眉的单元格。
-     return MIN([[WXManager sharedManager].dailyForecast count], 6) + 1;
-    return 0;
+     return count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
+    //wxzhao 新建一个 cell 类
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
     if (! cell) {
@@ -578,6 +625,9 @@
     // 当你滚动的时候，把结果值赋给模糊图像的alpha属性，来更改模糊图像。
     self.blurredImageView.alpha = percent;
 }
+
+
+
 
 
 

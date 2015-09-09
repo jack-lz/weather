@@ -10,7 +10,6 @@
 #import "WXController.h"
 #import <TSMessage.h>
 
-
 @interface AppDelegate ()
 
 @end
@@ -19,7 +18,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+   self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // 设置根控制器，通常这个控制器是一个的UINavigationController或UITabBarController
     WXController *rootVC = [[WXController alloc] init];
     //将第一个视图控制器作为基栈视图控制器添加到导航视图控制器栈中
@@ -27,14 +26,15 @@
     //作为App的根视图控制器。也可以使用WXController的单个实例作为根试图控制器。
     navCtr.navigationBar.hidden=YES;
     self.window.rootViewController = navCtr;
-    self.window.backgroundColor = [UIColor whiteColor];
-    [self.window makeKeyAndVisible];
+    
+    
     // 设置默认的视图控制器来显示你的TSMessages。这样做，你将不再需要手动指定要使用的控制器来显示警告。
+    // TSMessages 是另一个非常简单的库，用来显示浮层警告和通知。当出现错误信息而不直接影响用户的时候，最好使用浮层来代替模态窗口(例如UIAlertView)，这样你将尽可能减少对用户的影响。
     [TSMessage setDefaultViewController: self.window.rootViewController];
     
     
-       // Override point for customization after application launch.
-    [NSThread sleepForTimeInterval:1.3];
+    // Override point for customization after application launch.
+    //[NSThread sleepForTimeInterval:1.3];
     [self.window makeKeyAndVisible];
     
     
