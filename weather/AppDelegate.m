@@ -35,6 +35,8 @@
     
     // Override point for customization after application launch.
     //[NSThread sleepForTimeInterval:1.3];
+    
+    //显示窗口
     [self.window makeKeyAndVisible];
     
     

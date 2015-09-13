@@ -14,7 +14,8 @@
 #import "LGHelper.h"
 #import "ShuffleAnimation.h"
 #import "ScaleAnimation.h"
-
+#import "WXViewCellFrame.h"
+#import "WXTableViewCell.h"
 
 
 @interface WXController ()
@@ -26,13 +27,15 @@
 @property (nonatomic, strong) UIImageView *blurredImageView;
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, assign) CGFloat screenHeight;
+@property (nonatomic, assign) CGFloat cellHeight;
 @property (nonatomic, strong) NSDateFormatter *hourlyFormatter;
 @property (nonatomic, strong) NSDateFormatter *dailyFormatter;
 @property (nonatomic, strong) UIButton *cityButton;
 @property (nonatomic, strong) NSString *defaultCity;//全局变量，专用于给下一视图传送当前城市的
-@property (nonatomic, strong) NSString *SelectCity;
+@property (nonatomic, strong) NSString *selectCity;
 @property (nonatomic, strong) LGRefreshView *refreshView;
-@property (nonatomic, strong) UIButton      *RefreshButton;
+@property (nonatomic, strong) UIButton      *refreshButton;
+
 
 @end
 
@@ -42,7 +45,7 @@
     
     [super viewDidLoad];
     
-   self.SelectCity = @"定位到当前位置";
+   self.selectCity = @"定位到当前位置";
    self.navigationController.delegate=self;//设置委托，使得 Navigation Controller Delegate中的两个方法生效
   
     
@@ -188,20 +191,20 @@
     self.cityButton .userInteractionEnabled=YES;//使能可以点击
     [header addSubview:self.cityButton];
     
-    self.RefreshButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-50,23, 45, 28)];
-    self.RefreshButton.backgroundColor = [UIColor clearColor];
-    [self.RefreshButton.layer setMasksToBounds:YES];//方法告诉layer将位于它之下的layer都遮盖
-    [self.RefreshButton.layer setCornerRadius:10.0]; //设置矩形四个圆角半径
-    [self.RefreshButton.layer setBorderWidth:0.8]; //边框宽度
-    [self.RefreshButton setTitle: @"Refresh" forState:UIControlStateNormal];//设置 title
-    self.RefreshButton.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [self.RefreshButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];//title color
-    self.RefreshButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:10];
-    [self.RefreshButton addTarget:self action:@selector(RefreshAction) forControlEvents:UIControlEventTouchUpInside];//添加 action
-    [self.RefreshButton  setBackgroundImage:[LGHelper image1x1WithColor:[UIColor blueColor]] forState:UIControlStateHighlighted];
-    [self.RefreshButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
-    self.RefreshButton .userInteractionEnabled=YES;//使能可以点击
-    [header addSubview:self.RefreshButton];
+    self.refreshButton = [[UIButton alloc] initWithFrame:CGRectMake(self.view.bounds.size.width-50,23, 45, 28)];
+    self.refreshButton.backgroundColor = [UIColor clearColor];
+    [self.refreshButton.layer setMasksToBounds:YES];//方法告诉layer将位于它之下的layer都遮盖
+    [self.refreshButton.layer setCornerRadius:10.0]; //设置矩形四个圆角半径
+    [self.refreshButton.layer setBorderWidth:0.8]; //边框宽度
+    [self.refreshButton setTitle: @"Refresh" forState:UIControlStateNormal];//设置 title
+    self.refreshButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [self.refreshButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];//title color
+    self.refreshButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:10];
+    [self.refreshButton addTarget:self action:@selector(RefreshAction) forControlEvents:UIControlEventTouchUpInside];//添加 action
+    [self.refreshButton  setBackgroundImage:[LGHelper image1x1WithColor:[UIColor blueColor]] forState:UIControlStateHighlighted];
+    [self.refreshButton setTitleColor:[UIColor whiteColor] forState:UIControlStateHighlighted];
+    self.refreshButton .userInteractionEnabled=YES;//使能可以点击
+    [header addSubview:self.refreshButton];
     
     
    
@@ -222,83 +225,10 @@
         iconView.image = [UIImage imageNamed:[newCondition imageName]];
              
         //风向和风速
-             NSString *windbearing=[[NSString alloc]init];
-             switch (newCondition.windBearing.integerValue/10)
-             {
-                 case 34:case 35:case 36:case 0:case 1:
-                    windbearing=@"北风";
-                     break;
-                 case 2:case 3:case 4:case 5:case 6:
-                    windbearing=@"东北风";
-                     break;
-                 case 7:case 8:case 9:case 10:
-                    windbearing=@"东风";
-                    break;
-                 case 11:case 12:case 13:case 14:case 15:
-                    windbearing=@"东南风";
-                     break;
-                 case 16:case 17:case 18:case 19:
-                     windbearing=@"南风";
-                     break;
-                 case 20:case 21:case 22:case 23:case 24:
-                     windbearing=@"西南风";
-                     break;
-                 case 25:case 26:case 27:case 28:
-                     windbearing=@"西风";
-                     break;
-                 case 29:case 30:case 31:case 32:case 33:
-                     windbearing=@"西北风";
-                     break;
-                 default:
-                     break;
-             }
+        NSString *windBearing=[[NSString alloc]initWithString:[newCondition windBearingString]];
+        NSString *windSpeed=[[NSString alloc]initWithString:[newCondition windSpeedString]];
              
-             int intValue=(int)ceilf(newCondition.windSpeed.floatValue);
-             NSString *windspeed=[[NSString alloc]init];
-             switch (intValue)
-             {
-                 case 0:case 1:
-                    windspeed=@"0级 无风";
-                     break;
-                 case 2:case 3:case 4:case 5:
-                     windspeed=@"1级 软风";
-                     break;
-                 case 6:case 7:case 8:case 9:case 10:case 11:
-                     windspeed=@"2级 轻风";
-                     break;
-                 case 12:case 13:case 14:case 15:case 16:case 17:case 18:case 19:
-                     windspeed=@"3级 微风";
-                     break;
-                 case 20:case 21:case 22:case 23:case 24:case 25:case 26:case 27:case 28:
-                     windspeed=@"4级 和风";
-                     break;
-                 case 29:case 30:case 31:case 32:case 33:case 34:case 35:case 36:case 37:case 38:
-                     windspeed=@"5级 清风";
-                     break;
-                 case 39:case 40:case 41:case 42:case 43:case 44:case 45:case 46:case 47:case 48:case 49:
-                     windspeed=@"6级 强风";
-                     break;
-                 case 50:case 51:case 52:case 53:case 54:case 55:case 56:case 57:case 58:case 59:case 60:case 61:
-                     windspeed=@"7级 疾风";
-                     break;
-                 case 62:case 63:case 64:case 65:case 66:case 67:case 68:case 69:case 70:case 71:case 72:case 73:case 74:
-                     windspeed=@"8级 大风";
-                     break;
-                 case 75:case 76:case 77:case 78:case 79:case 80:case 81:case 82:case 83:case 84:case 85:case 86:case 87:case 88:
-                     windspeed=@"9级 烈风";
-                     break;
-                 case 89:case 90:case 91:case 92:case 93:case 94:case 95:case 96:case 97:case 98:case 99:case 100:case 101:case 102:
-                     windspeed=@"10级 狂风";
-                     break;
-                 case 103:case 104:case 105:case 106:case 107:case 108:case 109:case 110:case 111:case 112:case 113:case 114:case 115:case 116:case 117:
-                     windspeed=@"11级 暴风";
-                     break;
-                 default:
-                     windspeed=@"12级 台风";
-                     break;
-             }
-             
-       windLabel.text = [NSString stringWithFormat:@"    %@  %@",windbearing,windspeed];
+        windLabel.text = [NSString stringWithFormat:@"   %@    %@",windBearing,windSpeed];
              
         //改变背景，从下标8开始抽取到字符串结束，包括8，搜索到背景图片
         self.backgroundImageView.image = [UIImage imageNamed:[[newCondition imageName] substringFromIndex:8]];
@@ -306,8 +236,7 @@
        //self.blurredImageView.image = [UIImage imageNamed:[[newCondition imageName] substringFromIndex:8]];
        [self.blurredImageView setImageToBlur:[UIImage imageNamed:[[newCondition imageName] substringFromIndex:8]] blurRadius:10 completionBlock:nil];
         conditionsLabel.text = [newCondition.condition capitalizedString];//首字母大写
-        temperatureLabel.text = [NSString stringWithFormat:@"%.0f°",(newCondition.temperature.floatValue-32)*5/9];
-
+        temperatureLabel.text = [NSString stringWithFormat:@"%.0f°",[newCondition fahrenheitToCelsius:newCondition.temperature].floatValue];
         self.defaultCity=cityLabel.text;
          
          }
@@ -320,7 +249,7 @@
                                                        RACObserve([WXManager sharedManager], currentCondition.tempLow)]
                              // 从合并的信号中，减少数值，转换成一个单一的数据，注意参数的顺序与信号的顺序相匹配。
                                               reduce:^(NSNumber *hi, NSNumber *low) {
-                                                  return [NSString  stringWithFormat:@"%.0f°/ %.0f°",(hi.floatValue-32)*5/9,(low.floatValue-32)*5/9];
+                                                  return [NSString  stringWithFormat:@"%.0f°~%.0f°",(low.floatValue-32)*5/9,(hi.floatValue-32)*5/9];
                                               }] 
                             // 同样，因为你正在处理UI界面，所以把所有东西都传递到主线程。
                             deliverOn:RACScheduler.mainThreadScheduler];
@@ -351,7 +280,7 @@
                         {
                             __strong typeof(wself) self = wself;
                             
-                           [[WXManager sharedManager] ChooseCityLocation:self.SelectCity];
+                           [[WXManager sharedManager] ChooseCityLocation:self.selectCity];
                         
                             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^(void)
                                            {
@@ -467,10 +396,10 @@
 
 - (void)citySelectionUpdate:(NSString *) selectedCity
 {
-    self.SelectCity= selectedCity;//从 WXManger 传值回来
+    self.selectCity= selectedCity;//从 WXManger 传值回来
 //NSLog(@"%@",self.SelectCity);
     
-    [[WXManager sharedManager] ChooseCityLocation:self.SelectCity];//改变 currentCondition的值
+    [[WXManager sharedManager] ChooseCityLocation:self.selectCity];//改变 currentCondition的值
 
 }
 
@@ -494,7 +423,6 @@
     NSInteger count= MIN([[WXManager sharedManager].dailyForecast count], 6) + 1;
    if (section == 0) {
        count=MIN([[WXManager sharedManager].hourlyForecast count], 6) + 1;
-       
     }
     
     // 接下来的部分是每日预报。使用最近6天的每日预报，并添加了一个作为页眉的单元格。
@@ -502,42 +430,55 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Cell";
-    //wxzhao 新建一个 cell 类
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (! cell) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
-    }
    
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.backgroundColor = [UIColor colorWithWhite:0 alpha:0.2];
-    cell.textLabel.textColor = [UIColor whiteColor];
-    cell.detailTextLabel.textColor = [UIColor whiteColor];
+    
+    NSInteger cellCount = [self tableView:tableView numberOfRowsInSection:indexPath.section];
+ 
+    self.cellHeight=self.screenHeight /(CGFloat)cellCount;
+    //选择自定义的 cell
+    WXTableViewCell *cell = [WXTableViewCell cellWithTableView:tableView ];
+    WXViewCellFrame *viewFrame = [[WXViewCellFrame alloc] init];
+    viewFrame.cellHeight=self.cellHeight;
     
     if (indexPath.section == 0) {
         // 每个部分的第一行是标题单元格。
         if (indexPath.row == 0) {
-            [self configureHeaderCell:cell title:@"Hourly Forecast"];
+            viewFrame.weather = nil;
+            viewFrame.dateLabelFrame = CGRectMake(10, 20, 250,55);
+            viewFrame.temperatureLabelFrame=CGRectMake(0, 0, 0,0);
+            cell.viewCellFrame=viewFrame;
+            cell.dateLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
+            cell.dateLabel.text = @"Hourly Forecast";
+            cell.dateLabel.textColor=[UIColor blackColor];
         }
         else {
             // 获取每小时的天气和使用自定义配置方法配置cell。
-           WXCondition *weather = [WXManager sharedManager].hourlyForecast[indexPath.row - 1];
-           [self configureHourlyCell:cell weather:weather];
+            WXCondition *weather = [WXManager sharedManager].hourlyForecast[indexPath.row - 1];
+            viewFrame.weather = weather;
+            viewFrame.selectTitle=@"Hourly Forecast";
+            cell.viewCellFrame=viewFrame;
         }
     }
     else if (indexPath.section == 1) {
         // 每个部分的第一行是标题单元格。
         if (indexPath.row == 0) {
-            [self configureHeaderCell:cell title:@"Daily Forecast"];
+            viewFrame.weather = nil;
+            viewFrame.dateLabelFrame = CGRectMake(10, 20, 250,55);
+            viewFrame.temperatureLabelFrame=CGRectMake(0, 0, 0,0);
+            cell.viewCellFrame=viewFrame;
+            cell.dateLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:22];
+            cell.dateLabel.text = @"Daily Forecast";
+             cell.dateLabel.textColor=[UIColor blackColor];
         }
         else {
             // 获取每天的天气，并使用另一个自定义配置方法配置cell。
-           WXCondition *weather = [WXManager sharedManager].dailyForecast[indexPath.row - 1];
-           [self configureDailyCell:cell weather:weather];
-        } 
+            WXCondition *weather = [WXManager sharedManager].dailyForecast[indexPath.row - 1];
+            viewFrame.weather = weather;
+            viewFrame.selectTitle=@"Daily Forecast";
+             cell.viewCellFrame=viewFrame;
+        }
     }
-    
+   // cell.viewCellFrame=viewFrame;
     return cell;
 }
 
@@ -547,8 +488,7 @@
     //  Determine cell height based on screen
     NSInteger cellCount = [self tableView:tableView numberOfRowsInSection:indexPath.section];
     return self.screenHeight /(CGFloat)cellCount;
-    
-  //  return 44;
+
 }
 
 
@@ -564,51 +504,6 @@
 }
 
 
-
-- (id)init {
-    //设置一下时区,显示成北京时间（东八区）
-    [_hourlyFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"zh_CN"]];
-    [_dailyFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"zh_CH"]];
-    
-    if (self = [super init]) {
-        _hourlyFormatter = [[NSDateFormatter alloc] init];
-        _hourlyFormatter.dateFormat = @"HH:mm";
-        
-        _dailyFormatter = [[NSDateFormatter alloc] init];
-        _dailyFormatter.dateFormat = @"d-MMM";
-    }
-    return self;
-}
-
-// 配置和添加文本到作为section页眉单元格。你会重用此为每日每时的预测部分。
-- (void)configureHeaderCell:(UITableViewCell *)cell title:(NSString *)title {
-    cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:18];
-    cell.textLabel.text = title;
-    cell.detailTextLabel.text = @"";
-    cell.imageView.image = nil;
-}
-
-// 格式化逐时预报的单元格。
-- (void)configureHourlyCell:(UITableViewCell *)cell weather:(WXCondition *)weather {
-    cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:18];
-    cell.detailTextLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:18];
-    cell.textLabel.text = [self.hourlyFormatter stringFromDate:weather.date];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0f°",(weather.temperature.floatValue-32)*5/9];
-    cell.imageView.image = [UIImage imageNamed:[weather imageName]];
-    cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
-}
-
-//格式化每日预报的单元格。
-- (void)configureDailyCell:(UITableViewCell *)cell weather:(WXCondition *)weather {
-    cell.textLabel.font = [UIFont fontWithName:@"HelveticaNeue-Light" size:18];
-    cell.detailTextLabel.font = [UIFont fontWithName:@"HelveticaNeue-Medium" size:18];
-    cell.textLabel.text = [self.dailyFormatter stringFromDate:weather.date];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%.0f° / %.0f°",
-                                 (weather.tempHigh.floatValue-32)*5/9,
-                                 (weather.tempLow.floatValue-32)*5/9];
-    cell.imageView.image = [UIImage imageNamed:[weather imageName]];
-    cell.imageView.contentMode = UIViewContentModeScaleAspectFit;
-}
 
 #pragma mark - UIScrollViewDelegate
 

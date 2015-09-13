@@ -15,6 +15,7 @@
 		563D771E1B84959C00533BD0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 563D771D1B84959C00533BD0 /* Images.xcassets */; };
 		563D772D1B84959C00533BD0 /* weatherTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 563D772C1B84959C00533BD0 /* weatherTests.m */; };
 		56501D771B933C1400659378 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56501D761B933C1400659378 /* MapKit.framework */; };
+		56CB30211BA2DED8008A6746 /* WXViewCellFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CB30201BA2DED8008A6746 /* WXViewCellFrame.m */; };
 		56CCF6A21B8497F900435736 /* WXController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CCF6A11B8497F900435736 /* WXController.m */; };
 		56CCF6BF1B84991E00435736 /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 56CCF6A41B84991E00435736 /* bg.png */; };
 		56CCF6C01B84991E00435736 /* bg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 56CCF6A51B84991E00435736 /* bg@2x.png */; };
@@ -83,6 +84,7 @@
 		56E5C2791BA093E6006996D0 /* ScaleAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E5C2761BA093E6006996D0 /* ScaleAnimation.m */; };
 		56E5C27A1BA093E6006996D0 /* ShuffleAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E5C2781BA093E6006996D0 /* ShuffleAnimation.m */; };
 		56E5C27D1BA093EF006996D0 /* BaseAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E5C27C1BA093EF006996D0 /* BaseAnimation.m */; };
+		56EEC5241BA0F0D100375E76 /* WXTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56EEC5231BA0F0D100375E76 /* WXTableViewCell.m */; };
 		9894B2BF07D9D2742AEDF4A3 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DC3A0338BB311E5532F8E1A /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -111,6 +113,8 @@
 		563D772B1B84959C00533BD0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		563D772C1B84959C00533BD0 /* weatherTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = weatherTests.m; sourceTree = "<group>"; };
 		56501D761B933C1400659378 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		56CB301F1BA2DED8008A6746 /* WXViewCellFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXViewCellFrame.h; sourceTree = "<group>"; };
+		56CB30201BA2DED8008A6746 /* WXViewCellFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXViewCellFrame.m; sourceTree = "<group>"; };
 		56CCF6A01B8497F900435736 /* WXController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXController.h; sourceTree = "<group>"; };
 		56CCF6A11B8497F900435736 /* WXController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXController.m; sourceTree = "<group>"; };
 		56CCF6A41B84991E00435736 /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg.png; sourceTree = "<group>"; };
@@ -188,6 +192,8 @@
 		56E5C2781BA093E6006996D0 /* ShuffleAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShuffleAnimation.m; sourceTree = "<group>"; };
 		56E5C27B1BA093EF006996D0 /* BaseAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseAnimation.h; sourceTree = "<group>"; };
 		56E5C27C1BA093EF006996D0 /* BaseAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseAnimation.m; sourceTree = "<group>"; };
+		56EEC5221BA0F0D100375E76 /* WXTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXTableViewCell.h; sourceTree = "<group>"; };
+		56EEC5231BA0F0D100375E76 /* WXTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXTableViewCell.m; sourceTree = "<group>"; };
 		7890861192F027612F589DF2 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		F213C1E56458C0E931317171 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -252,6 +258,7 @@
 				56CCF6E01B84C89000435736 /* WXDailyForecast.m */,
 				56CCF6DC1B84C86100435736 /* WXCondition.h */,
 				56CCF6DD1B84C86100435736 /* WXCondition.m */,
+				56CB30221BA2DEF2008A6746 /* WXTableViewCell */,
 				56CCF6A01B8497F900435736 /* WXController.h */,
 				56CCF6A11B8497F900435736 /* WXController.m */,
 				56CCF6A31B84991E00435736 /* Images */,
@@ -309,6 +316,17 @@
 				563D772B1B84959C00533BD0 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		56CB30221BA2DEF2008A6746 /* WXTableViewCell */ = {
+			isa = PBXGroup;
+			children = (
+				56CB301F1BA2DED8008A6746 /* WXViewCellFrame.h */,
+				56CB30201BA2DED8008A6746 /* WXViewCellFrame.m */,
+				56EEC5221BA0F0D100375E76 /* WXTableViewCell.h */,
+				56EEC5231BA0F0D100375E76 /* WXTableViewCell.m */,
+			);
+			name = WXTableViewCell;
 			sourceTree = "<group>";
 		};
 		56CCF6A31B84991E00435736 /* Images */ = {
@@ -603,6 +621,7 @@
 			files = (
 				56E2BF051B8A70DD00D15D35 /* CityListViewController.m in Sources */,
 				56CCF6DB1B84C82200435736 /* WXManager.m in Sources */,
+				56EEC5241BA0F0D100375E76 /* WXTableViewCell.m in Sources */,
 				563D77161B84959C00533BD0 /* weather.xcdatamodeld in Sources */,
 				56CCF6E71B84E0E300435736 /* WXClient.m in Sources */,
 				56E5C2791BA093E6006996D0 /* ScaleAnimation.m in Sources */,
@@ -613,6 +632,7 @@
 				563D77101B84959C00533BD0 /* main.m in Sources */,
 				56E5C27A1BA093E6006996D0 /* ShuffleAnimation.m in Sources */,
 				56CCF6DE1B84C86100435736 /* WXCondition.m in Sources */,
+				56CB30211BA2DED8008A6746 /* WXViewCellFrame.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

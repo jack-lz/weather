@@ -28,5 +28,7 @@
 
 // 这是一个简单的辅助方法，从天气状况映射到图像文件。
 - (NSString *)imageName;
-
+- (NSString *)windBearingString;
+- (NSString *)windSpeedString;
+- (NSNumber *)fahrenheitToCelsius:(NSNumber *)fahrenheit;
 @end
