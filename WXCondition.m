@@ -156,7 +156,7 @@ switch (intValue)
              };
 }
 
-//为NSDate属性设置的转换器。
+//以下的函数都是针对各个属性的转换方法，提供给MTLJSONAdapter类调用的，命名方法必须是属性名+JSONTransformer这个格式。
 + (NSValueTransformer *)dateJSONTransformer {
     // 使用blocks做属性的转换的工作，并返回一个MTLValueTransformer返回值。^指Block，顾名思义代码块
    // 1. 它使得你的一段代码可以像普通变量值一样传递给其他函数和方法。

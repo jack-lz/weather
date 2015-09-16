@@ -63,19 +63,16 @@
         
         // 1.创建日期标签
         UILabel *dateLabel = [[UILabel alloc] init];
-        dateLabel.font = DateFont;
         [self.contentView addSubview:dateLabel];
         self.dateLabel = dateLabel;
         
         // 2.创建天气描述的标签
         UILabel *descriptionLabel = [[UILabel alloc] init];
-        descriptionLabel.font = DateFont;
         [self.contentView addSubview:descriptionLabel];
         self.descriptionLabel= descriptionLabel;
         
         // 3.创建正文
         UILabel *temperatureLabel = [[UILabel alloc] init];
-        temperatureLabel.font = TemperatureFont;
         temperatureLabel.numberOfLines = 0;
         [self.contentView addSubview:temperatureLabel];
         self.temperatureLabel = temperatureLabel;
@@ -135,11 +132,14 @@
     }
     self.dateLabel.backgroundColor=[UIColor clearColor];
     self.dateLabel.textColor=[UIColor whiteColor];
+    self.dateLabel.font = DateFont;
     self.dateLabel.textAlignment = NSTextAlignmentLeft;
     self.temperatureLabel.textColor=[UIColor whiteColor];
+    self.temperatureLabel.font = TemperatureFont;
     self.temperatureLabel.textAlignment = NSTextAlignmentRight;
     //设置天气描述lable
     self.descriptionLabel.text=weather.conditionDescription;
+    self.descriptionLabel.font = DateFont;
     self.descriptionLabel.textAlignment = NSTextAlignmentCenter;
     self.descriptionLabel.backgroundColor=[UIColor clearColor];
     self.descriptionLabel.textColor=[UIColor whiteColor];
