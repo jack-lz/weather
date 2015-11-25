@@ -15,8 +15,6 @@
 /***时间*/
 @property (nonatomic, weak) UILabel *dateLabel;
 
-
-
 + (instancetype)cellWithTableView:(UITableView *)tableView  ;
 
 @end

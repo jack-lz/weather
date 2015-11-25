@@ -9,6 +9,7 @@
 @import Foundation;
 @import CoreLocation;
 #import <ReactiveCocoa.h>
+#import "WXURLSession.h"
 
 @interface WXClient : NSObject
 

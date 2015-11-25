@@ -10,5 +10,7 @@
 
 
 @interface WXController : UIViewController
+
 <UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate,UIViewControllerTransitioningDelegate, UINavigationControllerDelegate>
+
 @end

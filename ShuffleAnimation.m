@@ -48,7 +48,7 @@
             toViewController.view.layer.transform = toT;
         }];
         
-        //Adjust the views horizontally to clear eachother
+        //Adjust the views horizontally to clear each other
         [UIView addKeyframeWithRelativeStartTime:0.20 relativeDuration:0.20 animations:^{
             if (self.type == AnimationTypePresent) {
                 fromSnapshot.layer.transform = CATransform3DTranslate(fromSnapshot.layer.transform, -width, 0.0, 0.0);

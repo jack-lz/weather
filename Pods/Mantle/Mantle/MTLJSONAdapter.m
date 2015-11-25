@@ -101,7 +101,8 @@ static NSString * const MTLJSONAdapterThrownExceptionErrorKey = @"MTLJSONAdapter
 	NSMutableDictionary *dictionaryValue = [[NSMutableDictionary alloc] initWithCapacity:JSONDictionary.count];
 
 	for (NSString *propertyKey in [self.modelClass propertyKeys]) {
-		NSString *JSONKeyPath = [self JSONKeyPathForKey:propertyKey];
+
+		NSString *JSONKeyPath = [self JSONKeyPathForKey:propertyKey];//对 self 中的_JSONKeyPathsByPropertyKey 进行操作
 		if (JSONKeyPath == nil) continue;
 
 		id value = [JSONDictionary valueForKeyPath:JSONKeyPath];
@@ -109,6 +110,7 @@ static NSString * const MTLJSONAdapterThrownExceptionErrorKey = @"MTLJSONAdapter
 
 		@try {
 			NSValueTransformer *transformer = [self JSONTransformerForKey:propertyKey];
+           
 			if (transformer != nil) {
 				// Map NSNull -> nil for the transformer, and then back for the
 				// dictionary we're going to insert into.

@@ -12,11 +12,11 @@
 @implementation BaseAnimation
 
 #pragma mark - UIViewControllerAnimatedTransitioning
-
+//跳转动画
 -(void)animateTransition:(id<UIViewControllerContextTransitioning>)transitionContext {
     NSAssert(NO, @"animateTransition: should be handled by subclass of BaseAnimation");
 }
-
+//跳转动画周期
 -(NSTimeInterval)transitionDuration:(id<UIViewControllerContextTransitioning>)transitionContext {
     return 1.0;
 }

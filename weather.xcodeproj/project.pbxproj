@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5601803C1C055CC40088FE60 /* WXClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 5601803B1C055CC40088FE60 /* WXClient.m */; };
+		5630598F1BF1F73700E9CAD9 /* WXLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5630598E1BF1F73700E9CAD9 /* WXLocation.m */; };
 		5630E1D71B8E263000193EC6 /* dw.png in Resources */ = {isa = PBXBuildFile; fileRef = 5630E1D51B8E263000193EC6 /* dw.png */; };
 		5630E1D81B8E263000193EC6 /* dw@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5630E1D61B8E263000193EC6 /* dw@2x.png */; };
 		563D77101B84959C00533BD0 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 563D770F1B84959C00533BD0 /* main.m */; };
@@ -46,7 +48,6 @@
 		56CCF6DB1B84C82200435736 /* WXManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CCF6DA1B84C82200435736 /* WXManager.m */; };
 		56CCF6DE1B84C86100435736 /* WXCondition.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CCF6DD1B84C86100435736 /* WXCondition.m */; };
 		56CCF6E11B84C89000435736 /* WXDailyForecast.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CCF6E01B84C89000435736 /* WXDailyForecast.m */; };
-		56CCF6E71B84E0E300435736 /* WXClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 56CCF6E61B84E0E300435736 /* WXClient.m */; };
 		56DD13AD1B9E500B0053ED18 /* broken.png in Resources */ = {isa = PBXBuildFile; fileRef = 56DD13951B9E500B0053ED18 /* broken.png */; };
 		56DD13AE1B9E500B0053ED18 /* broken@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 56DD13961B9E500B0053ED18 /* broken@2x.png */; };
 		56DD13AF1B9E500B0053ED18 /* clear.png in Resources */ = {isa = PBXBuildFile; fileRef = 56DD13971B9E500B0053ED18 /* clear.png */; };
@@ -85,6 +86,7 @@
 		56E5C27A1BA093E6006996D0 /* ShuffleAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E5C2781BA093E6006996D0 /* ShuffleAnimation.m */; };
 		56E5C27D1BA093EF006996D0 /* BaseAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E5C27C1BA093EF006996D0 /* BaseAnimation.m */; };
 		56EEC5241BA0F0D100375E76 /* WXTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56EEC5231BA0F0D100375E76 /* WXTableViewCell.m */; };
+		56FE41EE1BE9091200CB1A9D /* WXURLSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FE41ED1BE9091200CB1A9D /* WXURLSession.m */; };
 		9894B2BF07D9D2742AEDF4A3 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2DC3A0338BB311E5532F8E1A /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -100,6 +102,10 @@
 
 /* Begin PBXFileReference section */
 		2DC3A0338BB311E5532F8E1A /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		5601803A1C055CC40088FE60 /* WXClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXClient.h; sourceTree = "<group>"; };
+		5601803B1C055CC40088FE60 /* WXClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXClient.m; sourceTree = "<group>"; };
+		5630598D1BF1F73700E9CAD9 /* WXLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXLocation.h; sourceTree = "<group>"; };
+		5630598E1BF1F73700E9CAD9 /* WXLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXLocation.m; sourceTree = "<group>"; };
 		5630E1D51B8E263000193EC6 /* dw.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dw.png; sourceTree = "<group>"; };
 		5630E1D61B8E263000193EC6 /* dw@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "dw@2x.png"; sourceTree = "<group>"; };
 		563D770A1B84959C00533BD0 /* weather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = weather.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -149,8 +155,6 @@
 		56CCF6DD1B84C86100435736 /* WXCondition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXCondition.m; sourceTree = "<group>"; };
 		56CCF6DF1B84C89000435736 /* WXDailyForecast.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXDailyForecast.h; sourceTree = "<group>"; };
 		56CCF6E01B84C89000435736 /* WXDailyForecast.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXDailyForecast.m; sourceTree = "<group>"; };
-		56CCF6E51B84E0E300435736 /* WXClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXClient.h; sourceTree = "<group>"; };
-		56CCF6E61B84E0E300435736 /* WXClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXClient.m; sourceTree = "<group>"; };
 		56DD13951B9E500B0053ED18 /* broken.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = broken.png; sourceTree = "<group>"; };
 		56DD13961B9E500B0053ED18 /* broken@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "broken@2x.png"; sourceTree = "<group>"; };
 		56DD13971B9E500B0053ED18 /* clear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clear.png; sourceTree = "<group>"; };
@@ -194,6 +198,8 @@
 		56E5C27C1BA093EF006996D0 /* BaseAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseAnimation.m; sourceTree = "<group>"; };
 		56EEC5221BA0F0D100375E76 /* WXTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXTableViewCell.h; sourceTree = "<group>"; };
 		56EEC5231BA0F0D100375E76 /* WXTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXTableViewCell.m; sourceTree = "<group>"; };
+		56FE41EC1BE9091200CB1A9D /* WXURLSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WXURLSession.h; sourceTree = "<group>"; };
+		56FE41ED1BE9091200CB1A9D /* WXURLSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WXURLSession.m; sourceTree = "<group>"; };
 		7890861192F027612F589DF2 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		F213C1E56458C0E931317171 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -250,19 +256,23 @@
 			isa = PBXGroup;
 			children = (
 				56E2D9561B8B34AB00A9FB42 /* CityList */,
+				56CCF6A01B8497F900435736 /* WXController.h */,
+				56CCF6A11B8497F900435736 /* WXController.m */,
 				56CCF6D91B84C82200435736 /* WXManager.h */,
 				56CCF6DA1B84C82200435736 /* WXManager.m */,
-				56CCF6E51B84E0E300435736 /* WXClient.h */,
-				56CCF6E61B84E0E300435736 /* WXClient.m */,
+				5601803A1C055CC40088FE60 /* WXClient.h */,
+				5601803B1C055CC40088FE60 /* WXClient.m */,
+				5630598D1BF1F73700E9CAD9 /* WXLocation.h */,
+				5630598E1BF1F73700E9CAD9 /* WXLocation.m */,
+				56FE41EC1BE9091200CB1A9D /* WXURLSession.h */,
+				56FE41ED1BE9091200CB1A9D /* WXURLSession.m */,
 				56CCF6DF1B84C89000435736 /* WXDailyForecast.h */,
 				56CCF6E01B84C89000435736 /* WXDailyForecast.m */,
 				56CCF6DC1B84C86100435736 /* WXCondition.h */,
 				56CCF6DD1B84C86100435736 /* WXCondition.m */,
 				56CB30221BA2DEF2008A6746 /* WXTableViewCell */,
-				56CCF6A01B8497F900435736 /* WXController.h */,
-				56CCF6A11B8497F900435736 /* WXController.m */,
-				56CCF6A31B84991E00435736 /* Images */,
 				56E5C2701BA06E37006996D0 /* Animation */,
+				56CCF6A31B84991E00435736 /* Images */,
 				563D770C1B84959C00533BD0 /* weather */,
 				563D77291B84959C00533BD0 /* weatherTests */,
 				563D770B1B84959C00533BD0 /* Products */,
@@ -476,7 +486,7 @@
 		563D77021B84959C00533BD0 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0640;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "lz-jack";
 				TargetAttributes = {
 					563D77091B84959C00533BD0 = {
@@ -619,11 +629,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56FE41EE1BE9091200CB1A9D /* WXURLSession.m in Sources */,
 				56E2BF051B8A70DD00D15D35 /* CityListViewController.m in Sources */,
+				5630598F1BF1F73700E9CAD9 /* WXLocation.m in Sources */,
+				5601803C1C055CC40088FE60 /* WXClient.m in Sources */,
 				56CCF6DB1B84C82200435736 /* WXManager.m in Sources */,
 				56EEC5241BA0F0D100375E76 /* WXTableViewCell.m in Sources */,
 				563D77161B84959C00533BD0 /* weather.xcdatamodeld in Sources */,
-				56CCF6E71B84E0E300435736 /* WXClient.m in Sources */,
 				56E5C2791BA093E6006996D0 /* ScaleAnimation.m in Sources */,
 				563D77131B84959C00533BD0 /* AppDelegate.m in Sources */,
 				56CCF6A21B8497F900435736 /* WXController.m in Sources */,
@@ -676,6 +688,7 @@
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -743,6 +756,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = weather/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "USST.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -755,6 +769,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = weather/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "USST.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -773,6 +788,7 @@
 				);
 				INFOPLIST_FILE = weatherTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "USST.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/weather.app/weather";
 			};
@@ -788,6 +804,7 @@
 				);
 				INFOPLIST_FILE = weatherTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "USST.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/weather.app/weather";
 			};

@@ -8,9 +8,14 @@
 
 @import Foundation;
 @import CoreLocation;
-#import <ReactiveCocoa.h>
-// 请注意，你没有引入WXDailyForecast.h，你会始终使用WXCondition作为预报的类。 WXDailyForecast的存在是为了帮助Mantle转换JSON到Objective-C。
+@import UIKit;
+
 #import "WXCondition.h"
+#import "WXURLSession.h"
+#import "WXDailyForecast.h"
+#import "WXLocation.h"
+#import <ReactiveCocoa.h>
+#import "WXClient.h"
 
 @interface WXManager : NSObject
 <CLLocationManagerDelegate>
@@ -25,7 +30,8 @@
 @property (nonatomic, strong, readonly) NSArray *dailyForecast;
 
 // 这个方法启动或刷新整个位置和天气的查找过程。
-- (void)findCurrentLocation;
-- (void)ChooseCityLocation:(NSString *) selectedCity;
+- (void)requestLocationAuthority;
+- (void)chooseCityLocation:(NSString *) selectedCity;
+- (void)startUpdatingLocation;
 
 @end

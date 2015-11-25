@@ -26,5 +26,5 @@
 /*** 模型数据*/
 @property (nonatomic, strong) WXCondition *weather ;
 /***每时或每天的设定*/
-@property (nonatomic, strong) NSString * selectTitle;
+@property (nonatomic, strong) NSString *selectTitle;
 @end
